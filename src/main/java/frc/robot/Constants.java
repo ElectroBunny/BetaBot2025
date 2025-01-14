@@ -48,4 +48,16 @@ public final class Constants
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT    = 6;
   }
+
+  // Constants used by the Elevator
+  public static class ElevatorConstants
+  {
+    public static final double ELEVATOR_POSITION_TOLERANCE = 0.5; 
+    public static final int ELEVATOR_MOTOR_ID = 0; 
+    public static final double ELEVATOR_MAX_VELO = 1000;
+    public static final  double ELEVATOR_MAX_ACCELLERATION = 1000;
+    public static final double ELEVATOR_P = 0.4;
+    public static final double ELEVATOR_I = 0.0;
+    public static final double ELEVATOR_D = 0.0;
+  }
 }
