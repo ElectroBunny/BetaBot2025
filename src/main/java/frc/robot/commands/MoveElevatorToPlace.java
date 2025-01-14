@@ -12,8 +12,9 @@ public class MoveElevatorToPlace extends Command
   private static Elevator elevator;
   private double point; 
 
-  public MoveElevatorToPlace() 
+  public MoveElevatorToPlace(double point) 
   {
+    this.point = point;
     elevator = Elevator.getInstance();
     addRequirements(elevator);
   }

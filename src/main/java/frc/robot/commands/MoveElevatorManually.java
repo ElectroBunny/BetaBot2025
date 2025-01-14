@@ -4,20 +4,17 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Elevator;
 
 public class MoveElevatorManually extends Command 
 {
   private static Elevator elevator;
-  private double point;
-  private DoubleSupplier doubleSupplier;
+  private double power;
 
-  public MoveElevatorManually(DoubleSupplier doubleSupplier) 
+  public MoveElevatorManually(double power) 
   {
-    this.doubleSupplier = doubleSupplier;
+    this.power = power;
 
     elevator = Elevator.getInstance();
     addRequirements(elevator);
@@ -29,7 +26,7 @@ public class MoveElevatorManually extends Command
   @Override
   public void execute() 
   {
-    elevator.setPower(doubleSupplier.getAsDouble());
+    elevator.setPower(this.power);
   }
 
   @Override

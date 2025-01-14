@@ -46,7 +46,7 @@ public class Elevator extends SubsystemBase {
 
     motorConfig.closedLoop.maxMotion
         .maxVelocity(Constants.ElevatorConstants.ELEVATOR_MAX_VELO)
-        .maxAcceleration(Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION)
+        .maxAcceleration(Constants.ElevatorConstants.ELEVATOR_MAX_ACCELLERATION)
         .allowedClosedLoopError(1);
 
     motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
@@ -70,7 +70,7 @@ public class Elevator extends SubsystemBase {
   }
 
   /**
-   *              moves the elevator to the specified location
+   * Moves the elevator to the specified location
    * @param point the specified location            
    */
   public void moveElevator(double point)
@@ -97,6 +97,6 @@ public class Elevator extends SubsystemBase {
    */
   public boolean isInPoint(double point) 
   {
-    return ((encoder.getPosition() - point) <= Constants.ElevatorConstants.ELEVATOR_POSITION_TOLERANCE);
+    return (Math.abs(encoder.getPosition() - point) <= Constants.ElevatorConstants.ELEVATOR_POSITION_TOLERANCE);
   }
 }
