@@ -7,17 +7,17 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.IntakeArm;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class MoveArmToPosManually extends Command {
   private DoubleSupplier velocitySupplier;
-  private Arm arm;
+  private IntakeArm arm;
   /** Creates a new MoveArmToPosManually. */
   public MoveArmToPosManually(DoubleSupplier velocitySupplier) {
     this.velocitySupplier = velocitySupplier;
 
-    this.arm = Arm.getInstance();
+    this.arm = IntakeArm.getInstance();
     addRequirements(arm);
     // Use addRequirements() here to declare subsystem dependencies.
   }
