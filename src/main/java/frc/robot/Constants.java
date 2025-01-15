@@ -47,6 +47,7 @@ public final class Constants
     public static final double LEFT_Y_DEADBAND = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT    = 6;
+    public static final int kDriverControllerPort = 0;
   }
 
   // Constants used by the Elevator
@@ -78,8 +79,4 @@ public final class Constants
   public static final double SPARK_MAX_ENCODER_SPINs_NUM = 4096;
 
   public static final double ARM_TOLARANCE = 0;
-
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
-  }
 }
