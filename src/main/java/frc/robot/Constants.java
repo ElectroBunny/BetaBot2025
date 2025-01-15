@@ -70,6 +70,12 @@ public final class Constants
 
   public static final double ARM_TOLARANCE = 0;
 
+  // Algae intake constants
+  public static final int ALGAE_INTAKE_MOTOR_ID = 0;
+  public static final int ALGAE_INTAKE_CURRENT_LIMIT = 40;
+  public static final double ALGAE_INTAKE_VELOCITY_GAIN_TIME = 0.5;
+  public static final double ALGAE_INTAKE_STOP_VELOCITY = 0;
+  
   public static class CoralScorerConstants
   {
     public static final int CORAL_SCORER_MOTOR_ID = 0;
