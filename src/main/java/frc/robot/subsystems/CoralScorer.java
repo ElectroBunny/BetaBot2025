@@ -22,11 +22,11 @@ public class CoralScorer extends SubsystemBase
 
   public CoralScorer() 
   {
-    scorerMotor = new SparkFlex(Constants.CoralScorerConstants.CORAL_SCORER_MOTOR_ID, MotorType.kBrushless);
+    scorerMotor = new SparkFlex(Constants.CORAL_SCORER_MOTOR_ID, MotorType.kBrushless);
     motorConfig = new SparkFlexConfig();
 
     motorConfig.idleMode(IdleMode.kBrake);
-    motorConfig.smartCurrentLimit(Constants.CoralScorerConstants.CORAL_SCORER_CURRENT_LIMIT);
+    motorConfig.smartCurrentLimit(Constants.CORAL_SCORER_CURRENT_LIMIT);
     scorerMotor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 

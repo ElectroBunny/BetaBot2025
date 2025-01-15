@@ -8,14 +8,6 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
 
-/**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean constants. This
- * class should not be used for any other purpose. All constants should be declared globally (i.e. public static). Do
- * not put anything functional in this class.
- *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
- * constants are needed, to reduce verbosity.
- */
 public final class Constants
 {
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
@@ -40,17 +32,16 @@ public final class Constants
     public static final int kDriverControllerPort = 0;
   }
 
-  // Constants used by the Elevator
-  public static class ElevatorConstants
-  {
-    public static final double ELEVATOR_POSITION_TOLERANCE = 0.5; 
-    public static final int ELEVATOR_MOTOR_ID = 0; 
-    public static final double ELEVATOR_MAX_VELO = 1000;
-    public static final double ELEVATOR_MAX_ACCELLERATION = 1000;
-    public static final double ELEVATOR_P = 0.4;
-    public static final double ELEVATOR_I = 0.0;
-    public static final double ELEVATOR_D = 0.0;
-  }
+  // Elevator constants
+  public static final double ELEVATOR_POSITION_TOLERANCE = 0.5; 
+  public static final int ELEVATOR_MOTOR_ID = 0; 
+  public static final double ELEVATOR_MAX_VELO = 1000;
+  public static final double ELEVATOR_MAX_ACCELLERATION = 1000;
+  public static final double ELEVATOR_P = 0.4;
+  public static final double ELEVATOR_I = 0.0;
+  public static final double ELEVATOR_D = 0.0;
+  public static final int ELEVATOR_CURRENT_LIMIT = 40;
+
 
   // Algae intake constants
   public static final int ALGAE_INTAKE_MOTOR_ID = 0;
@@ -58,9 +49,8 @@ public final class Constants
   public static final double ALGAE_INTAKE_VELOCITY_GAIN_TIME = 0.5;
   public static final double ALGAE_INTAKE_STOP_VELOCITY = 0;
   
-  public static class CoralScorerConstants
-  {
-    public static final int CORAL_SCORER_MOTOR_ID = 0;
-    public static final int CORAL_SCORER_CURRENT_LIMIT = 40;
-  }
+  // Coral scores constants
+  public static final int CORAL_SCORER_MOTOR_ID = 0;
+  public static final int CORAL_SCORER_CURRENT_LIMIT = 40;
+
 }

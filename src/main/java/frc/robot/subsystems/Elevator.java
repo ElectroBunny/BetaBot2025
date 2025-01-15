@@ -13,6 +13,7 @@ import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -26,27 +27,28 @@ public class Elevator extends SubsystemBase {
   private SparkClosedLoopController closedLoopController;
   private RelativeEncoder encoder;
 
-  /** Creates a new Elevator. */
   private Elevator() 
   {
-    motor = new SparkFlex(Constants.ElevatorConstants.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
+    motor = new SparkFlex(Constants.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
     closedLoopController = motor.getClosedLoopController();
     encoder = motor.getEncoder();
 
     motorConfig = new SparkFlexConfig();
+    motorConfig.idleMode(IdleMode.kBrake);
+    motorConfig.smartCurrentLimit(Constants.ELEVATOR_CURRENT_LIMIT);
 
     motorConfig.encoder.positionConversionFactor(1);
 
     motorConfig.closedLoop
         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-        .p(Constants.ElevatorConstants.ELEVATOR_P)
-        .i(Constants.ElevatorConstants.ELEVATOR_I)
-        .d(Constants.ElevatorConstants.ELEVATOR_D)
+        .p(Constants.ELEVATOR_P)
+        .i(Constants.ELEVATOR_I)
+        .d(Constants.ELEVATOR_D)
         .outputRange(-1, 1);
 
     motorConfig.closedLoop.maxMotion
-        .maxVelocity(Constants.ElevatorConstants.ELEVATOR_MAX_VELO)
-        .maxAcceleration(Constants.ElevatorConstants.ELEVATOR_MAX_ACCELLERATION)
+        .maxVelocity(Constants.ELEVATOR_MAX_VELO)
+        .maxAcceleration(Constants.ELEVATOR_MAX_ACCELLERATION)
         .allowedClosedLoopError(1);
 
     motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
@@ -97,6 +99,6 @@ public class Elevator extends SubsystemBase {
    */
   public boolean isInPoint(double point) 
   {
-    return (Math.abs(encoder.getPosition() - point) <= Constants.ElevatorConstants.ELEVATOR_POSITION_TOLERANCE);
+    return (Math.abs(encoder.getPosition() - point) <= Constants.ELEVATOR_POSITION_TOLERANCE);
   }
 }
