@@ -11,19 +11,18 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 
 public class RobotContainer {
 
-  private final CommandPS5Controller m_driverController =
-      new CommandPS5Controller(OperatorConstants.kDriverControllerPort);
+	private final CommandPS5Controller m_driverController = new CommandPS5Controller(
+			OperatorConstants.kDriverControllerPort);
 
-  public RobotContainer() {
-    configureBindings();
-  }
+	public RobotContainer() {
+		configureBindings();
+	}
 
-  private void configureBindings() {
-  }
+	private void configureBindings() {
+	}
 
-
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Commands.none();
-  }
+	public Command getAutonomousCommand() {
+		// An example command will be run in autonomous
+		return Commands.none();
+	}
 }

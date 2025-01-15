@@ -20,85 +20,81 @@ import frc.robot.Constants;
 
 public class Elevator extends SubsystemBase {
 
-  private static Elevator instance = null;
+	private static Elevator instance = null;
 
-  private SparkFlex motor;
-  private SparkFlexConfig motorConfig;
-  private SparkClosedLoopController closedLoopController;
-  private RelativeEncoder encoder;
+	private SparkFlex motor;
+	private SparkFlexConfig motorConfig;
+	private SparkClosedLoopController closedLoopController;
+	private RelativeEncoder encoder;
 
-  private Elevator() 
-  {
-    motor = new SparkFlex(Constants.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
-    closedLoopController = motor.getClosedLoopController();
-    encoder = motor.getEncoder();
+	private Elevator() {
+		motor = new SparkFlex(Constants.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
+		closedLoopController = motor.getClosedLoopController();
+		encoder = motor.getEncoder();
 
-    motorConfig = new SparkFlexConfig();
-    motorConfig.idleMode(IdleMode.kBrake);
-    motorConfig.smartCurrentLimit(Constants.ELEVATOR_CURRENT_LIMIT);
+		motorConfig = new SparkFlexConfig();
+		motorConfig.idleMode(IdleMode.kBrake);
+		motorConfig.smartCurrentLimit(Constants.ELEVATOR_CURRENT_LIMIT);
 
-    motorConfig.encoder.positionConversionFactor(1);
+		motorConfig.encoder.positionConversionFactor(1);
 
-    motorConfig.closedLoop
-        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-        .p(Constants.ELEVATOR_P)
-        .i(Constants.ELEVATOR_I)
-        .d(Constants.ELEVATOR_D)
-        .outputRange(-1, 1);
+		motorConfig.closedLoop
+				.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+				.p(Constants.ELEVATOR_P)
+				.i(Constants.ELEVATOR_I)
+				.d(Constants.ELEVATOR_D)
+				.outputRange(-1, 1);
 
-    motorConfig.closedLoop.maxMotion
-        .maxVelocity(Constants.ELEVATOR_MAX_VELO)
-        .maxAcceleration(Constants.ELEVATOR_MAX_ACCELLERATION)
-        .allowedClosedLoopError(1);
+		motorConfig.closedLoop.maxMotion
+				.maxVelocity(Constants.ELEVATOR_MAX_VELO)
+				.maxAcceleration(Constants.ELEVATOR_MAX_ACCELLERATION)
+				.allowedClosedLoopError(1);
 
-    motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
-  }
+		motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+	}
 
-  public void resetPosition() 
-  {
-    encoder.setPosition(0);
-  }
+	public void resetPosition() {
+		encoder.setPosition(0);
+	}
 
-  @Override
-  public void periodic() {}
+	@Override
+	public void periodic() {
+	}
 
-  public static Elevator getInstance() 
-  {
-    if (instance == null) 
-    {
-      instance = new Elevator();
-    }
-    return instance;
-  }
+	public static Elevator getInstance() {
+		if (instance == null) {
+			instance = new Elevator();
+		}
+		return instance;
+	}
 
-  /**
-   * Moves the elevator to the specified location
-   * @param point the specified location            
-   */
-  public void moveElevator(double point)
-  {
-    closedLoopController.setReference(point, ControlType.kMAXMotionPositionControl,
-        ClosedLoopSlot.kSlot0);
-  }
+	/**
+	 * Moves the elevator to the specified location
+	 * 
+	 * @param point the specified location
+	 */
+	public void moveElevator(double point) {
+		closedLoopController.setReference(point, ControlType.kMAXMotionPositionControl,
+				ClosedLoopSlot.kSlot0);
+	}
 
-  public void stopMotor() 
-  {
-    motor.stopMotor();
-  }
+	public void stopMotor() {
+		motor.stopMotor();
+	}
 
-  public void setPower(double power) 
-  {
-    motor.set(power);
-  }
+	public void setPower(double power) {
+		motor.set(power);
+	}
 
-  /**
-   *              Checks whether the elevator is approximately at the specified location.
-   * @param point the specified location
-   * @return True if the elevator is within the tolerance range of the specified location, 
-   *         else false. 
-   */
-  public boolean isInPoint(double point) 
-  {
-    return (Math.abs(encoder.getPosition() - point) <= Constants.ELEVATOR_POSITION_TOLERANCE);
-  }
+	/**
+	 * Checks whether the elevator is approximately at the specified location.
+	 * 
+	 * @param point the specified location
+	 * @return True if the elevator is within the tolerance range of the specified
+	 *         location,
+	 *         else false.
+	 */
+	public boolean isInPoint(double point) {
+		return (Math.abs(encoder.getPosition() - point) <= Constants.ELEVATOR_POSITION_TOLERANCE);
+	}
 }

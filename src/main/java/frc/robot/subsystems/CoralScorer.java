@@ -14,38 +14,33 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class CoralScorer extends SubsystemBase 
-{
-  private SparkFlex scorerMotor;
-  private SparkFlexConfig motorConfig;
-  private static CoralScorer instance = null;
+public class CoralScorer extends SubsystemBase {
+	private SparkFlex scorerMotor;
+	private SparkFlexConfig motorConfig;
+	private static CoralScorer instance = null;
 
-  public CoralScorer() 
-  {
-    scorerMotor = new SparkFlex(Constants.CORAL_SCORER_MOTOR_ID, MotorType.kBrushless);
-    motorConfig = new SparkFlexConfig();
+	public CoralScorer() {
+		scorerMotor = new SparkFlex(Constants.CORAL_SCORER_MOTOR_ID, MotorType.kBrushless);
+		motorConfig = new SparkFlexConfig();
 
-    motorConfig.idleMode(IdleMode.kBrake);
-    motorConfig.smartCurrentLimit(Constants.CORAL_SCORER_CURRENT_LIMIT);
-    scorerMotor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
-  }
+		motorConfig.idleMode(IdleMode.kBrake);
+		motorConfig.smartCurrentLimit(Constants.CORAL_SCORER_CURRENT_LIMIT);
+		scorerMotor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+	}
 
-  public void setPower(double power) 
-  {
-    scorerMotor.set(power);
-  }
+	public void setPower(double power) {
+		scorerMotor.set(power);
+	}
 
-  public static CoralScorer getInstance() 
-  {
-    if (instance == null) {
-      instance = new CoralScorer();
-    }
+	public static CoralScorer getInstance() {
+		if (instance == null) {
+			instance = new CoralScorer();
+		}
 
-    return instance;
-  }
+		return instance;
+	}
 
-  @Override
-  public void periodic() 
-  {
-  }
+	@Override
+	public void periodic() {
+	}
 }
