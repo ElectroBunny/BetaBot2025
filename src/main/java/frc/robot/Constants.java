@@ -52,24 +52,6 @@ public final class Constants
     public static final double ELEVATOR_D = 0.0;
   }
 
-  public static final int ARM_MOTOR_ID = 0;
-
-  public static final double ARM_POSITION_CONVERTION_FACTOR = 360;
-
-  public static final double ARM_P = 1;
-  public static final double ARM_D = 1;
-  public static final double ARM_I = 1;
-
-  public static final double MAX_OUTPUT_RANGE = 1;
-  public static final double MIN_OUTPUT_RANGE = -1;
-
-  public static final double MAX_ARM_VELOCITY = 1000;
-  public static final double MAX_ARM_ACCELERATION = 1000;
-
-  public static final double SPARK_MAX_ENCODER_SPINs_NUM = 4096;
-
-  public static final double ARM_TOLARANCE = 0;
-
   // Algae intake constants
   public static final int ALGAE_INTAKE_MOTOR_ID = 0;
   public static final int ALGAE_INTAKE_CURRENT_LIMIT = 40;
