@@ -38,15 +38,22 @@ public final class Constants {
 	public static final double ELEVATOR_I = 0.0;
 	public static final double ELEVATOR_D = 0.0;
 	public static final int ELEVATOR_CURRENT_LIMIT = 40;
+  public static final double ELEVATOR_MANUAL_POWER = 0.5;
+  public static final double L1_HEIGHT = 0;
+  public static final double L2_HEIGHT = 0;
+  public static final double L3_HEIGHT = 0;
+  public static final double L4_HEIGHT = 0;
+  public static final double CLOSED_HEIGHT = 0;
 
 	// Algae intake constants
 	public static final int ALGAE_INTAKE_MOTOR_ID = 0;
 	public static final int ALGAE_INTAKE_CURRENT_LIMIT = 40;
 	public static final double ALGAE_INTAKE_VELOCITY_GAIN_TIME = 0.5;
 	public static final double ALGAE_INTAKE_STOP_VELOCITY = 0;
+  public static final double ALGAE_INTAKE_POWER = 0.4;
 
 	// Coral scores constants
 	public static final int CORAL_SCORER_MOTOR_ID = 0;
 	public static final int CORAL_SCORER_CURRENT_LIMIT = 40;
-
+  public static final double CORAL_SCORE_POWER = 0.5;
 }
