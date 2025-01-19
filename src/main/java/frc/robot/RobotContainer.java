@@ -20,7 +20,7 @@ public class RobotContainer {
 
 	final CommandPS5Controller driverConntroller = new CommandPS5Controller(0);
 
-	private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+	public static final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
 			"swerve"));
 
 
