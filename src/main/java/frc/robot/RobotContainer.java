@@ -5,6 +5,8 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.CollectAlgae;
+import frc.robot.commands.ManualAlgaeCollection;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
@@ -19,6 +21,7 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+    m_driverController.circle().whileTrue(new ManualAlgaeCollection(Constants.ALGAE_INTAKE_TEST_VELOCITY));
   }
 
 
