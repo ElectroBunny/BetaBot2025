@@ -4,8 +4,13 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Degree;
+import static edu.wpi.first.units.Units.Degrees;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
 import swervelib.math.Matter;
 
 public final class Constants {
@@ -48,5 +53,14 @@ public final class Constants {
 	// Coral scores constants
 	public static final int CORAL_SCORER_MOTOR_ID = 0;
 	public static final int CORAL_SCORER_CURRENT_LIMIT = 40;
+  
+  //alignment constant
+  public static final Pose2d REEF_POSE2D = new Pose2d();
 
+  public static final Angle ZONE_ONE = Angle.ofBaseUnits(0, Degrees);
+  public static final Angle ZONE_TWO = Angle.ofBaseUnits(60, Degrees);
+  public static final Angle ZONE_THREE = Angle.ofBaseUnits(120, Degrees);
+  public static final Angle ZONE_FOUR = Angle.ofBaseUnits(180, Degrees);
+  public static final Angle ZONE_FIVE = Angle.ofBaseUnits(240, Degrees);
+  public static final Angle ZONE_SIX = Angle.ofBaseUnits(300, Degrees);
 }
