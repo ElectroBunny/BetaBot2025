@@ -4,6 +4,12 @@
 
 package frc.robot;
 
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.CollectAlgae;
+import frc.robot.commands.MoveElevatorManually;
+import frc.robot.commands.MoveElevatorToPlace;
+import frc.robot.commands.ScoreAlgae;
+import frc.robot.commands.ScoreCoral;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -31,11 +37,24 @@ public class RobotContainer {
 		NamedCommands.registerCommand("test", Commands.print("I EXIST"));
 	}
 
-
 	private void configureBindings() {
 		// (Condition) ? Return-On-True : Return-on-False
 		drivebase.setDefaultCommand(
 				!RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedAnglularVelocitySim);
+  
+  // Algae commands
+    driverController.L1().whileTrue(new CollectAlgae(Constants.ALGAE_INTAKE_POWER));
+    driverController.R1().whileTrue(new ScoreAlgae(-Constants.ALGAE_INTAKE_POWER));
+
+    // Elevator commands
+    driverController.square().whileTrue(new MoveElevatorManually(Constants.ELEVATOR_MANUAL_POWER));
+    driverController.circle().whileTrue(new MoveElevatorManually(-Constants.ELEVATOR_MANUAL_POWER));
+
+    driverController.povRight().onTrue(new MoveElevatorToPlace(Constants.L1_HEIGHT));
+    driverController.povLeft().onTrue(new MoveElevatorToPlace(Constants.L2_HEIGHT));
+    driverController.povDown().onTrue(new MoveElevatorToPlace(Constants.L3_HEIGHT));
+    driverController.povUp().onTrue(new MoveElevatorToPlace(Constants.L4_HEIGHT));
+    driverController.triangle().onTrue(new MoveElevatorToPlace(Constants.CLOSED_HEIGHT));
 	}
 
 	/**
