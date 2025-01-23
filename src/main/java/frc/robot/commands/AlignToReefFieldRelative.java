@@ -20,13 +20,13 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class AlignToReifFeildRelative extends Command {
+public class AlignToReefFieldRelative extends Command {
   private PIDController xController;
   private PIDController yController;
   private PIDController rotController;
   private boolean isRightScore;
 
-  public AlignToReifFeildRelative(boolean isRightScore) {
+  public AlignToReefFieldRelative(boolean isRightScore) {
     xController = new PIDController(0, 0, 0);
     yController = new PIDController(0, 0, 0);
     rotController = new PIDController(0, 0, 0);
