@@ -8,6 +8,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.CollectAlgae;
 import frc.robot.commands.MoveElevatorManually;
 import frc.robot.commands.MoveElevatorToPlace;
+import frc.robot.commands.ScoreAlgae;
 import frc.robot.commands.ScoreCoral;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -29,18 +30,18 @@ public class RobotContainer
     driverController.cross().whileTrue(new ScoreCoral(Constants.CORAL_SCORE_POWER));
 
     // Algae commands
-    driverController.L1().onTrue(new CollectAlgae(Constants.ALGAE_INTAKE_POWER));
-    driverController.R1().onTrue(new CollectAlgae(-Constants.ALGAE_INTAKE_POWER));
+    driverController.L1().whileTrue(new CollectAlgae(Constants.ALGAE_INTAKE_POWER));
+    driverController.R1().whileTrue(new ScoreAlgae(-Constants.ALGAE_INTAKE_POWER));
 
     // Elevator commands
-    driverController.square().onTrue(new MoveElevatorManually(Constants.ELEVATOR_MANUAL_POWER));
-    driverController.circle().onTrue(new MoveElevatorManually(-Constants.ELEVATOR_MANUAL_POWER));
+    driverController.square().whileTrue(new MoveElevatorManually(Constants.ELEVATOR_MANUAL_POWER));
+    driverController.circle().whileTrue(new MoveElevatorManually(-Constants.ELEVATOR_MANUAL_POWER));
 
     driverController.povRight().onTrue(new MoveElevatorToPlace(Constants.L1_HEIGHT));
     driverController.povLeft().onTrue(new MoveElevatorToPlace(Constants.L2_HEIGHT));
     driverController.povDown().onTrue(new MoveElevatorToPlace(Constants.L3_HEIGHT));
     driverController.povUp().onTrue(new MoveElevatorToPlace(Constants.L4_HEIGHT));
-    driverController.triangle().onTrue(new MoveElevatorToPlace(Constants.L4_HEIGHT));
+    driverController.triangle().onTrue(new MoveElevatorToPlace(Constants.CLOSED_HEIGHT));
 
 	}
 
