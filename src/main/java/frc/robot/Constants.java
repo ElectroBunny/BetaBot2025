@@ -39,6 +39,9 @@ public final class Constants {
 	public static final double ELEVATOR_D = 0.0;
 	public static final int ELEVATOR_CURRENT_LIMIT = 40;
 
+	// Automatic constants
+	public static final double AUTO_POSITION = 3.0;
+
 	// Algae intake constants
 	public static final int ALGAE_INTAKE_MOTOR_ID = 0;
 	public static final int ALGAE_INTAKE_CURRENT_LIMIT = 40;
@@ -48,5 +51,4 @@ public final class Constants {
 	// Coral scores constants
 	public static final int CORAL_SCORER_MOTOR_ID = 0;
 	public static final int CORAL_SCORER_CURRENT_LIMIT = 40;
-
 }
