@@ -23,6 +23,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Utility;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import swervelib.SwerveDrive;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class AlignToReefFieldRelative extends Command {
@@ -65,19 +67,21 @@ public class AlignToReefFieldRelative extends Command {
       double xSpeed = xController.calculate(robotPose.getX());
       double ySpeed = yController.calculate(robotPose.getY());
       double rotValue = rotController.calculate(robotPose.getRotation().getDegrees());
-
+      
       RobotContainer.drivebase.drive(new Translation2d(xSpeed, ySpeed), rotValue, false);
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    RobotContainer.drivebase.setMotorBrake(true);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return this.constructPath().equals(RobotContainer.drivebase.getPose());
   }
 
 
@@ -120,7 +124,7 @@ public class AlignToReefFieldRelative extends Command {
       }
       else
       {
-        return Constants.ZONE_THREE_RIGHT;
+        return Constants.ZONE_THREE_LEFT;
       }
     }
     else if (Utility.isAngleBetween(Utility.convertTo360Range(angle.getDegrees()) , Constants.ZONE_THREE.abs(Degrees), Constants.ZONE_FOUR.abs(Degrees))) {
