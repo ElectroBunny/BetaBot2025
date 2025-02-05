@@ -64,17 +64,17 @@ public final class Constants {
   public static final Angle ZONE_FIVE = Angle.ofBaseUnits(240, Degrees);
   public static final Angle ZONE_SIX = Angle.ofBaseUnits(300, Degrees);
 
-  public static final Pose2d ZONE_ONE_LEFT = new Pose2d();
-  public static final Pose2d ZONE_ONE_RIGHT = new Pose2d();
-  public static final Pose2d ZONE_TWO_LEFT = new Pose2d();
-  public static final Pose2d ZONE_TWO_RIGHT = new Pose2d();
-  public static final Pose2d ZONE_THREE_LEFT = new Pose2d();
-  public static final Pose2d ZONE_THREE_RIGHT = new Pose2d();
-  public static final Pose2d ZONE_FOUR_LEFT = new Pose2d();
-  public static final Pose2d ZONE_FOUR_RIGHT = new Pose2d();
-  public static final Pose2d ZONE_FIVE_LEFT = new Pose2d();
-  public static final Pose2d ZONE_FIVE_RIGHT = new Pose2d();
-  public static final Pose2d ZONE_SIX_LEFT = new Pose2d();
-  public static final Pose2d ZONE_SIX_RIGHT = new Pose2d();
+  public static final Pose2d ZONE_ONE_LEFT = new Pose2d(); // i dont know the exact location we want to be so you need to tell me.
+  public static final Pose2d ZONE_ONE_RIGHT = new Pose2d();// same
+  public static final Pose2d ZONE_TWO_LEFT = new Pose2d();// same
+  public static final Pose2d ZONE_TWO_RIGHT = new Pose2d();// same
+  public static final Pose2d ZONE_THREE_LEFT = new Pose2d();// same
+  public static final Pose2d ZONE_THREE_RIGHT = new Pose2d();// same
+  public static final Pose2d ZONE_FOUR_LEFT = new Pose2d();// same
+  public static final Pose2d ZONE_FOUR_RIGHT = new Pose2d();// same
+  public static final Pose2d ZONE_FIVE_LEFT = new Pose2d();// same
+  public static final Pose2d ZONE_FIVE_RIGHT = new Pose2d();// same
+  public static final Pose2d ZONE_SIX_LEFT = new Pose2d();// same
+  public static final Pose2d ZONE_SIX_RIGHT = new Pose2d();// same
   
 }
