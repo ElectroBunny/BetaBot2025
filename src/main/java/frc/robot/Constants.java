@@ -45,6 +45,9 @@ public final class Constants {
   public static final double L4_HEIGHT = 0;
   public static final double CLOSED_HEIGHT = 0;
 
+	// Automatic constants
+	public static final double AUTO_POSITION = 3.0;
+
 	// Algae intake constants
 	public static final int ALGAE_INTAKE_MOTOR_ID = 0;
 	public static final int ALGAE_INTAKE_CURRENT_LIMIT = 40;

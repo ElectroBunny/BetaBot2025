@@ -5,6 +5,10 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.MoveElevatorToPlace;
+
+import com.pathplanner.lib.auto.NamedCommands;
+
 import frc.robot.commands.CollectAlgae;
 import frc.robot.commands.MoveElevatorManually;
 import frc.robot.commands.MoveElevatorToPlace;
@@ -14,10 +18,10 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
-import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
@@ -31,6 +35,9 @@ public class RobotContainer {
 
 
 	public RobotContainer() {
+		// Creating a named command for the auto part
+		NamedCommands.registerCommand("MoveArmToPosAuto", new MoveElevatorToPlace(Constants.AUTO_POSITION));
+
 		// Configure the trigger bindings
 		configureBindings();
 		DriverStation.silenceJoystickConnectionWarning(true);
