@@ -23,7 +23,6 @@ public class RobotContainer {
 	public static final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
 			"swerve"));
 
-
 	public RobotContainer() {
 		// Configure the trigger bindings
 		configureBindings();
