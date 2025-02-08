@@ -64,6 +64,8 @@ public final class Constants {
 	public static final double ALGAE_ARM_MAX_VEL = 0;
 	public static final double ALGAE_ARM_MAX_ACCEL = 0;
 	public static final double ALGAE_ARM_TOLERANCE = 0;
+	public static final double ALGAE_ARM_REEF_ANGLE = 90;
+	public static final double ALGAE_ARM_CLOSED_ANGLE = 0;
 
 	// Coral scores constants
 	public static final int CORAL_SCORER_MOTOR_ID = 0;
