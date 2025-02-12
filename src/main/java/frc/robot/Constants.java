@@ -31,7 +31,7 @@ public final class Constants {
 
 	// Elevator constants
 	public static final double ELEVATOR_POSITION_TOLERANCE = 0.5;
-	public static final int ELEVATOR_MOTOR_ID = 0;
+	public static final int ELEVATOR_MOTOR_ID = 23;
 	public static final double ELEVATOR_MAX_VELO = 1000;
 	public static final double ELEVATOR_MAX_ACCELLERATION = 1000;
 	public static final double ELEVATOR_P = 0.4;
@@ -49,14 +49,14 @@ public final class Constants {
 	public static final double AUTO_POSITION = 3.0;
 
 	// Algae intake constants
-	public static final int ALGAE_INTAKE_MOTOR_ID = 0;
+	public static final int ALGAE_INTAKE_MOTOR_ID = 22;
 	public static final int ALGAE_INTAKE_CURRENT_LIMIT = 40;
 	public static final double ALGAE_INTAKE_VELOCITY_GAIN_TIME = 0.5;
 	public static final double ALGAE_INTAKE_STOP_VELOCITY = 0;
   	public static final double ALGAE_INTAKE_POWER = 0.4;
 
 	// Algae arm constants
-	public static final int ALGAE_ARM_MOTOR_ID = 0;
+	public static final int ALGAE_ARM_MOTOR_ID = 21;
 	public static final double ALGAE_ARM_CONVERSION_FACTOR = 1;
 	public static final double ALGAE_ARM_P = 0;
 	public static final double ALGAE_ARM_I = 0;
@@ -68,7 +68,7 @@ public final class Constants {
 	public static final double ALGAE_ARM_CLOSED_ANGLE = 0;
 
 	// Coral scores constants
-	public static final int CORAL_SCORER_MOTOR_ID = 0;
+	public static final int CORAL_SCORER_MOTOR_ID = 20;
 	public static final int CORAL_SCORER_CURRENT_LIMIT = 40;
   	public static final double CORAL_SCORE_POWER = 0.5;
 }
