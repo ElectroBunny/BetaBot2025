@@ -10,6 +10,7 @@ import frc.robot.commands.MoveElevatorToPlace;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import frc.robot.commands.CollectAlgae;
+import frc.robot.commands.MoveAlgaeArmToAngle;
 import frc.robot.commands.MoveElevatorManually;
 import frc.robot.commands.MoveElevatorToPlace;
 import frc.robot.commands.ScoreAlgae;
@@ -28,7 +29,7 @@ import swervelib.SwerveInputStream;
 
 public class RobotContainer {
 
-	final CommandPS5Controller driverConntroller = new CommandPS5Controller(0);
+	final CommandPS5Controller driverController = new CommandPS5Controller(0);
 
 	private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
 			"swerve"));
@@ -49,9 +50,12 @@ public class RobotContainer {
 		drivebase.setDefaultCommand(
 				!RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedAnglularVelocitySim);
   
-  // Algae commands
-    driverController.L1().whileTrue(new CollectAlgae(Constants.ALGAE_INTAKE_POWER));
-    driverController.R1().whileTrue(new ScoreAlgae(-Constants.ALGAE_INTAKE_POWER));
+  	// Algae commands
+    driverController.L1().onTrue(new MoveAlgaeArmToAngle(Constants.ALGAE_ARM_REEF_ANGLE).
+	andThen(new CollectAlgae(Constants.ALGAE_INTAKE_POWER)));
+
+    driverController.R1().onTrue(new MoveAlgaeArmToAngle(Constants.ALGAE_ARM_REEF_ANGLE).
+	andThen(new ScoreAlgae(-Constants.ALGAE_INTAKE_POWER)));
 
     // Elevator commands
     driverController.square().whileTrue(new MoveElevatorManually(Constants.ELEVATOR_MANUAL_POWER));
@@ -80,9 +84,9 @@ public class RobotContainer {
 
 	
 	SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-			() -> driverConntroller.getLeftY() * -1,
-			() -> driverConntroller.getLeftX() * -1)
-			.withControllerRotationAxis(driverConntroller::getRightX)
+			() -> driverController.getLeftY() * -1,
+			() -> driverController.getLeftX() * -1)
+			.withControllerRotationAxis(driverController::getRightX)
 			.deadband(OperatorConstants.DEADBAND)
 			.scaleTranslation(0.8)
 			.allianceRelativeControl(true);
@@ -90,9 +94,9 @@ public class RobotContainer {
 	Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
 
 	SwerveInputStream driveAngularVelocitySim = SwerveInputStream.of(drivebase.getSwerveDrive(),
-			() -> -driverConntroller.getLeftY(),
-			() -> -driverConntroller.getLeftX())
-			.withControllerRotationAxis(() -> driverConntroller.getRawAxis(2))
+			() -> -driverController.getLeftY(),
+			() -> -driverController.getLeftX())
+			.withControllerRotationAxis(() -> driverController.getRawAxis(2))
 			.deadband(OperatorConstants.DEADBAND)
 			.scaleTranslation(0.8)
 			.allianceRelativeControl(true);
@@ -100,11 +104,11 @@ public class RobotContainer {
 
 	SwerveInputStream driveDirectAngleSim = driveAngularVelocitySim.copy()
 			.withControllerHeadingAxis(() -> Math.sin(
-					driverConntroller.getRawAxis(
+					driverController.getRawAxis(
 							2) * Math.PI)
 					* (Math.PI * 2),
 					() -> Math.cos(
-							driverConntroller.getRawAxis(
+							driverController.getRawAxis(
 									2) * Math.PI)
 							*
 							(Math.PI * 2))
