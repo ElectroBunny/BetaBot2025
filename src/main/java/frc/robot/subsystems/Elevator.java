@@ -15,42 +15,45 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Elevator extends SubsystemBase {
-
 	private static Elevator instance = null;
 
-	private SparkFlex motor;
-	private SparkFlexConfig motorConfig;
+	private SparkFlex masterMotor, followerMotor;
+	private SparkFlexConfig masterMotorConfig, followerMotorConfig;
 	private SparkClosedLoopController closedLoopController;
 	private RelativeEncoder encoder;
 
 	private Elevator() {
-		motor = new SparkFlex(Constants.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
-		closedLoopController = motor.getClosedLoopController();
-		encoder = motor.getEncoder();
+		masterMotor = new SparkFlex(Constants.ELEVATOR_MASTER_MOTOR_ID, MotorType.kBrushless);
+		followerMotor = new SparkFlex(Constants.ELEVATOR_FOLLOWER_MOTOR_ID, MotorType.kBrushless);
+		closedLoopController = masterMotor.getClosedLoopController();
+		encoder = masterMotor.getEncoder();
 
-		motorConfig = new SparkFlexConfig();
-		motorConfig.idleMode(IdleMode.kBrake);
-		motorConfig.smartCurrentLimit(Constants.ELEVATOR_CURRENT_LIMIT);
+		masterMotorConfig = new SparkFlexConfig();
+		masterMotorConfig.idleMode(IdleMode.kBrake);
+		masterMotorConfig.smartCurrentLimit(Constants.ELEVATOR_CURRENT_LIMIT);
 
-		motorConfig.encoder.positionConversionFactor(1);
+		masterMotorConfig.encoder.positionConversionFactor(1);
 
-		motorConfig.closedLoop
+		masterMotorConfig.closedLoop
 				.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
 				.p(Constants.ELEVATOR_P)
 				.i(Constants.ELEVATOR_I)
 				.d(Constants.ELEVATOR_D)
 				.outputRange(-1, 1);
 
-		motorConfig.closedLoop.maxMotion
+		masterMotorConfig.closedLoop.maxMotion
 				.maxVelocity(Constants.ELEVATOR_MAX_VELO)
 				.maxAcceleration(Constants.ELEVATOR_MAX_ACCELLERATION)
 				.allowedClosedLoopError(1);
 
-		motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+		masterMotor.configure(masterMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+		followerMotorConfig.follow(masterMotor);
+		followerMotor.configure(followerMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 	}
 
 	public void resetPosition() {
@@ -79,11 +82,11 @@ public class Elevator extends SubsystemBase {
 	}
 
 	public void stopMotor() {
-		motor.stopMotor();
+		masterMotor.stopMotor();
 	}
 
 	public void setPower(double power) {
-		motor.set(power);
+		masterMotor.set(power);
 	}
 
 	/**
