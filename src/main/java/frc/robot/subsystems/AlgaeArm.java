@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.RelativeEncoder;
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -23,19 +23,19 @@ public class AlgaeArm extends SubsystemBase {
   private SparkFlex motor;
   private SparkFlexConfig motorConfig;
   private SparkClosedLoopController closedLoopController;
-  private RelativeEncoder encoder;
+  private AbsoluteEncoder encoder;
   private static AlgaeArm instance = null;
 
   public AlgaeArm() {
     this.motor = new SparkFlex(Constants.ALGAE_ARM_MOTOR_ID, MotorType.kBrushless);
     this.closedLoopController = this.motor.getClosedLoopController();
-    this.encoder = this.motor.getEncoder();
-
+    this.encoder = this.motor.getAbsoluteEncoder();
+    
     motorConfig = new SparkFlexConfig();
     this.motorConfig.encoder.positionConversionFactor(Constants.ALGAE_ARM_CONVERSION_FACTOR);
     this.motorConfig.idleMode(IdleMode.kBrake);
 
-    this.motorConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+    this.motorConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
     .p(Constants.ALGAE_ARM_P)
     .i(Constants.ALGAE_ARM_I)
     .d(Constants.ALGAE_ARM_D)
@@ -47,7 +47,6 @@ public class AlgaeArm extends SubsystemBase {
     .allowedClosedLoopError(1);
 
     this.motor.configure(this.motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    this.encoder.setPosition(this.motor.getAbsoluteEncoder().getPosition());
   }
 
   /**
