@@ -28,7 +28,7 @@ public class MoveElevatorToPlace extends Command {
 
 	@Override
 	public void end(boolean interrupted) {
-		elevator.stopMotor();
+		elevator.stop();
 	}
 
 	@Override
