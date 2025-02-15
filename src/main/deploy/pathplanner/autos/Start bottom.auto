@@ -1,0 +1,37 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef - start bottom"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "MoveArmToPosAuto"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 4.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Coral getter - start bottom"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
