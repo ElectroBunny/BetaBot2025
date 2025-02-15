@@ -55,7 +55,7 @@ public class Elevator extends SubsystemBase {
 				.allowedClosedLoopError(1);
 
 		masterMotor.configure(masterMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
-		followerMotorConfig.follow(masterMotor);
+		followerMotorConfig.follow(masterMotor, true);
 		followerMotor.configure(followerMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 	}
 

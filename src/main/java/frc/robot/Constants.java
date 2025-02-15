@@ -31,8 +31,8 @@ public final class Constants {
 
 	// Elevator constants
 	public static final double ELEVATOR_POSITION_TOLERANCE = 0.5;
-	public static final int ELEVATOR_MASTER_MOTOR_ID = 23;
-	public static final int ELEVATOR_FOLLOWER_MOTOR_ID = 30;
+	public static final int ELEVATOR_MASTER_MOTOR_ID = 37;
+	public static final int ELEVATOR_FOLLOWER_MOTOR_ID = 40;
 	public static final double ELEVATOR_CONVERSION_FACTOR = 25;
 	public static final double ELEVATOR_MAX_VELO = 1000;
 	public static final double ELEVATOR_MAX_ACCELLERATION = 1000;
@@ -59,7 +59,7 @@ public final class Constants {
 
 	// Algae arm constants
 	public static final int ALGAE_ARM_MOTOR_ID = 21;
-	public static final double ALGAE_ARM_CONVERSION_FACTOR = 1;
+	public static final double ALGAE_ARM_CONVERSION_FACTOR = 30;
 	public static final double ALGAE_ARM_P = 0;
 	public static final double ALGAE_ARM_I = 0;
 	public static final double ALGAE_ARM_D = 0;
