@@ -34,10 +34,13 @@ public class Elevator extends SubsystemBase {
 		encoder = masterMotor.getEncoder();
 
 		masterMotorConfig = new SparkFlexConfig();
+		followerMotorConfig = new SparkFlexConfig();
 		masterMotorConfig.idleMode(IdleMode.kBrake);
+		followerMotorConfig.idleMode(IdleMode.kBrake);
 		masterMotorConfig.smartCurrentLimit(Constants.ELEVATOR_CURRENT_LIMIT);
+		followerMotorConfig.smartCurrentLimit(Constants.ELEVATOR_CURRENT_LIMIT);
 
-		masterMotorConfig.encoder.positionConversionFactor(1);
+		masterMotorConfig.encoder.positionConversionFactor(Constants.ELEVATOR_CONVERSION_FACTOR);
 
 		masterMotorConfig.closedLoop
 				.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -60,17 +63,6 @@ public class Elevator extends SubsystemBase {
 		encoder.setPosition(0);
 	}
 
-	@Override
-	public void periodic() {
-	}
-
-	public static Elevator getInstance() {
-		if (instance == null) {
-			instance = new Elevator();
-		}
-		return instance;
-	}
-
 	/**
 	 * Moves the elevator to the specified location
 	 * 
@@ -81,7 +73,7 @@ public class Elevator extends SubsystemBase {
 				ClosedLoopSlot.kSlot0);
 	}
 
-	public void stopMotor() {
+	public void stop() {
 		masterMotor.stopMotor();
 	}
 
@@ -99,5 +91,16 @@ public class Elevator extends SubsystemBase {
 	 */
 	public boolean isInPoint(double point) {
 		return (Math.abs(encoder.getPosition() - point) <= Constants.ELEVATOR_POSITION_TOLERANCE);
+	}
+
+	public static Elevator getInstance() {
+		if (instance == null) {
+			instance = new Elevator();
+		}
+		return instance;
+	}
+
+	@Override
+	public void periodic() {
 	}
 }

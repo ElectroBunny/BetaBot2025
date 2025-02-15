@@ -15,6 +15,7 @@ import frc.robot.commands.MoveElevatorManually;
 import frc.robot.commands.MoveElevatorToPlace;
 import frc.robot.commands.ScoreAlgae;
 import frc.robot.commands.ScoreCoral;
+import frc.robot.subsystems.Elevator;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -34,6 +35,42 @@ public class RobotContainer {
 	private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
 			"swerve"));
 
+			SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
+			() -> driverController.getLeftY() * -1,
+			() -> driverController.getLeftX() * -1)
+			.withControllerRotationAxis(driverController::getRightX)
+			.deadband(OperatorConstants.DEADBAND)
+			.scaleTranslation(0.8)
+			.allianceRelativeControl(true);
+
+	Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
+
+	SwerveInputStream driveAngularVelocitySim = SwerveInputStream.of(drivebase.getSwerveDrive(),
+			() -> -driverController.getLeftY(),
+			() -> -driverController.getLeftX())
+			.withControllerRotationAxis(() -> driverController.getRawAxis(2))
+			.deadband(OperatorConstants.DEADBAND)
+			.scaleTranslation(0.8)
+			.allianceRelativeControl(true);
+			
+
+	SwerveInputStream driveDirectAngleSim = driveAngularVelocitySim.copy()
+			.withControllerHeadingAxis(() -> Math.sin(
+					driverController.getRawAxis(
+							2) * Math.PI)
+					* (Math.PI * 2),
+					() -> Math.cos(
+							driverController.getRawAxis(
+									2) * Math.PI)
+							*
+							(Math.PI * 2))
+			.headingWhile(true);
+
+	Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDirectAngleSim);
+
+	Command driveFieldOrientedAnglularVelocitySim = drivebase.driveFieldOriented(driveAngularVelocitySim);
+
+	private Elevator elevator;
 
 	public RobotContainer() {
 		// Creating a named command for the auto part
@@ -43,6 +80,8 @@ public class RobotContainer {
 		configureBindings();
 		DriverStation.silenceJoystickConnectionWarning(true);
 		NamedCommands.registerCommand("test", Commands.print("I EXIST"));
+
+		elevator = Elevator.getInstance();
 	}
 
 	private void configureBindings() {
@@ -81,40 +120,8 @@ public class RobotContainer {
 	public void setMotorBrake(boolean brake) {
 		drivebase.setMotorBrake(brake);
 	}
-
 	
-	SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-			() -> driverController.getLeftY() * -1,
-			() -> driverController.getLeftX() * -1)
-			.withControllerRotationAxis(driverController::getRightX)
-			.deadband(OperatorConstants.DEADBAND)
-			.scaleTranslation(0.8)
-			.allianceRelativeControl(true);
-
-	Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
-
-	SwerveInputStream driveAngularVelocitySim = SwerveInputStream.of(drivebase.getSwerveDrive(),
-			() -> -driverController.getLeftY(),
-			() -> -driverController.getLeftX())
-			.withControllerRotationAxis(() -> driverController.getRawAxis(2))
-			.deadband(OperatorConstants.DEADBAND)
-			.scaleTranslation(0.8)
-			.allianceRelativeControl(true);
-			
-
-	SwerveInputStream driveDirectAngleSim = driveAngularVelocitySim.copy()
-			.withControllerHeadingAxis(() -> Math.sin(
-					driverController.getRawAxis(
-							2) * Math.PI)
-					* (Math.PI * 2),
-					() -> Math.cos(
-							driverController.getRawAxis(
-									2) * Math.PI)
-							*
-							(Math.PI * 2))
-			.headingWhile(true);
-
-	Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDirectAngleSim);
-
-	Command driveFieldOrientedAnglularVelocitySim = drivebase.driveFieldOriented(driveAngularVelocitySim);
+	public void resetEncoderPositions() {
+		elevator.resetPosition();
+	}
 }
