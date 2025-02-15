@@ -34,10 +34,13 @@ public class Elevator extends SubsystemBase {
 		encoder = masterMotor.getEncoder();
 
 		masterMotorConfig = new SparkFlexConfig();
+		followerMotorConfig = new SparkFlexConfig();
 		masterMotorConfig.idleMode(IdleMode.kBrake);
+		followerMotorConfig.idleMode(IdleMode.kBrake);
 		masterMotorConfig.smartCurrentLimit(Constants.ELEVATOR_CURRENT_LIMIT);
+		followerMotorConfig.smartCurrentLimit(Constants.ELEVATOR_CURRENT_LIMIT);
 
-		masterMotorConfig.encoder.positionConversionFactor(1);
+		masterMotorConfig.encoder.positionConversionFactor(Constants.ELEVATOR_CONVERSION_FACTOR);
 
 		masterMotorConfig.closedLoop
 				.feedbackSensor(FeedbackSensor.kPrimaryEncoder)

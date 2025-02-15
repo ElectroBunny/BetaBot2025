@@ -33,6 +33,7 @@ public final class Constants {
 	public static final double ELEVATOR_POSITION_TOLERANCE = 0.5;
 	public static final int ELEVATOR_MASTER_MOTOR_ID = 23;
 	public static final int ELEVATOR_FOLLOWER_MOTOR_ID = 23;
+	public static final double ELEVATOR_CONVERSION_FACTOR = 25;
 	public static final double ELEVATOR_MAX_VELO = 1000;
 	public static final double ELEVATOR_MAX_ACCELLERATION = 1000;
 	public static final double ELEVATOR_P = 0.4;
