@@ -19,7 +19,7 @@ public class CoralScorer extends SubsystemBase {
 	private SparkFlexConfig motorConfig;
 	private static CoralScorer instance = null;
 
-	public CoralScorer() {
+	private CoralScorer() {
 		scorerMotor = new SparkFlex(Constants.CORAL_SCORER_MOTOR_ID, MotorType.kBrushless);
 		motorConfig = new SparkFlexConfig();
 

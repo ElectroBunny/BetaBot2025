@@ -21,7 +21,7 @@ public class AlgaeIntake extends SubsystemBase {
 	private RelativeEncoder motorEncoder;
 	private static AlgaeIntake instance = null;
 
-	public AlgaeIntake() {
+	private AlgaeIntake() {
 		intakeMotor = new SparkFlex(Constants.ALGAE_INTAKE_MOTOR_ID, MotorType.kBrushless);
 		motorConfig = new SparkFlexConfig();
 

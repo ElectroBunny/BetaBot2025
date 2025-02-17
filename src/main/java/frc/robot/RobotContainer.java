@@ -20,13 +20,17 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
-
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
+import java.time.Instant;
+
 import swervelib.SwerveInputStream;
 
 public class RobotContainer {
@@ -37,7 +41,7 @@ public class RobotContainer {
 	private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
 			"swerve"));
 
-			SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
+	SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
 			() -> driverController.getLeftY() * -1,
 			() -> driverController.getLeftX() * -1)
 			.withControllerRotationAxis(driverController::getRightX)
@@ -54,7 +58,6 @@ public class RobotContainer {
 			.deadband(OperatorConstants.DEADBAND)
 			.scaleTranslation(0.8)
 			.allianceRelativeControl(true);
-			
 
 	SwerveInputStream driveDirectAngleSim = driveAngularVelocitySim.copy()
 			.withControllerHeadingAxis(() -> Math.sin(
@@ -84,33 +87,45 @@ public class RobotContainer {
 		NamedCommands.registerCommand("test", Commands.print("I EXIST"));
 
 		elevator = Elevator.getInstance();
+
+		new Trigger(() -> RobotController.getUserButton())
+				.onTrue(new InstantCommand(() -> resetEncoderPositions()));
 	}
 
 	private void configureBindings() {
 		// (Condition) ? Return-On-True : Return-on-False
 		drivebase.setDefaultCommand(
 				!RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedAnglularVelocitySim);
-  
-  	// // Algae commands
-    // driverController.L1().onTrue(new MoveAlgaeArmToAngle(Constants.ALGAE_ARM_REEF_ANGLE).
-	// andThen(new CollectAlgae(Constants.ALGAE_INTAKE_POWER)));
 
-    // driverController.R1().onTrue(new MoveAlgaeArmToAngle(Constants.ALGAE_ARM_REEF_ANGLE).
-	// andThen(new ScoreAlgae(-Constants.ALGAE_INTAKE_POWER)));
+		// // Algae commands
+		// driverController.L1().onTrue(new
+		// MoveAlgaeArmToAngle(Constants.ALGAE_ARM_REEF_ANGLE).
+		// andThen(new CollectAlgae(Constants.ALGAE_INTAKE_POWER)));
 
-    // Elevator commands
-    // driverController.square().whileTrue(new MoveElevatorManually(Constants.ELEVATOR_MANUAL_POWER));
-    // driverController.circle().whileTrue(new MoveElevatorManually(-Constants.ELEVATOR_MANUAL_POWER));
-	driverController.square().whileTrue(new MoveElevatorManually(-0.4));
-    driverController.triangle().whileTrue(new MoveElevatorManually(0.2));
+		// driverController.R1().onTrue(new
+		// MoveAlgaeArmToAngle(Constants.ALGAE_ARM_REEF_ANGLE).
+		// andThen(new ScoreAlgae(-Constants.ALGAE_INTAKE_POWER)));
 
-	driverController.circle().whileTrue(new ScoreCoral(0.5));
+		// Elevator commands
+		// driverController.square().whileTrue(new
+		// MoveElevatorManually(Constants.ELEVATOR_MANUAL_POWER));
+		// driverController.circle().whileTrue(new
+		// MoveElevatorManually(-Constants.ELEVATOR_MANUAL_POWER));
+		driverController.square().whileTrue(new MoveElevatorManually(-0.4));
+		driverController.triangle().whileTrue(new MoveElevatorManually(0.2));
 
-    // driverController.povRight().onTrue(new MoveElevatorToPlace(Constants.L1_HEIGHT));
-    // driverController.povLeft().onTrue(new MoveElevatorToPlace(Constants.L2_HEIGHT));
-    // driverController.povDown().onTrue(new MoveElevatorToPlace(Constants.L3_HEIGHT));
-    // driverController.povUp().onTrue(new MoveElevatorToPlace(Constants.L4_HEIGHT));
-    // driverController.triangle().onTrue(new MoveElevatorToPlace(Constants.CLOSED_HEIGHT));
+		driverController.circle().whileTrue(new ScoreCoral(0.5));
+
+		// driverController.povRight().onTrue(new
+		// MoveElevatorToPlace(Constants.L1_HEIGHT));
+		// driverController.povLeft().onTrue(new
+		// MoveElevatorToPlace(Constants.L2_HEIGHT));
+		// driverController.povDown().onTrue(new
+		// MoveElevatorToPlace(Constants.L3_HEIGHT));
+		// driverController.povUp().onTrue(new
+		// MoveElevatorToPlace(Constants.L4_HEIGHT));
+		// driverController.triangle().onTrue(new
+		// MoveElevatorToPlace(Constants.CLOSED_HEIGHT));
 	}
 
 	/**
@@ -126,7 +141,7 @@ public class RobotContainer {
 	public void setMotorBrake(boolean brake) {
 		drivebase.setMotorBrake(brake);
 	}
-	
+
 	public void resetEncoderPositions() {
 		elevator.resetPosition();
 	}

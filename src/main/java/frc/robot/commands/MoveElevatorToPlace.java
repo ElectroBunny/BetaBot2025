@@ -8,18 +8,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Elevator;
 
 public class MoveElevatorToPlace extends Command {
-	private static Elevator elevator;
-	private double point;
+	private Elevator elevator;
+	private double targetPose;
 
-	public MoveElevatorToPlace(double point) {
-		this.point = point;
+	public MoveElevatorToPlace(double targetPose) {
+		this.targetPose = targetPose;
 		elevator = Elevator.getInstance();
 		addRequirements(elevator);
 	}
 
 	@Override
 	public void initialize() {
-		elevator.moveElevator(point);
+		elevator.moveElevatorToPose(targetPose);
 	}
 
 	@Override
@@ -28,11 +28,10 @@ public class MoveElevatorToPlace extends Command {
 
 	@Override
 	public void end(boolean interrupted) {
-		elevator.stop();
 	}
 
 	@Override
 	public boolean isFinished() {
-		return elevator.isInPoint(point);
+		return elevator.isInPoint(targetPose);
 	}
 }

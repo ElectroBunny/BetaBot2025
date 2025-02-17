@@ -35,12 +35,20 @@ public class Elevator extends SubsystemBase {
 
 		masterMotorConfig = new SparkFlexConfig();
 		followerMotorConfig = new SparkFlexConfig();
-		masterMotorConfig.idleMode(IdleMode.kBrake);
-		followerMotorConfig.idleMode(IdleMode.kBrake);
+
+		// sets the elevator to coast prematch and it will be set to break when match
+		// starts
+		masterMotorConfig.idleMode(IdleMode.kCoast);
+		followerMotorConfig.idleMode(IdleMode.kCoast);
+
 		masterMotorConfig.smartCurrentLimit(Constants.ELEVATOR_CURRENT_LIMIT);
 		followerMotorConfig.smartCurrentLimit(Constants.ELEVATOR_CURRENT_LIMIT);
 
-		masterMotorConfig.encoder.positionConversionFactor(Constants.ELEVATOR_CONVERSION_FACTOR);
+		masterMotorConfig.encoder
+				.positionConversionFactor(
+						2 * Math.PI * Constants.ELEVATOR_ROLLER_RAIDUS / Constants.ELEVATOR_CONVERSION_FACTOR)
+				.velocityConversionFactor(
+						2 * Math.PI * Constants.ELEVATOR_ROLLER_RAIDUS / Constants.ELEVATOR_CONVERSION_FACTOR);
 
 		masterMotorConfig.closedLoop
 				.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -54,9 +62,25 @@ public class Elevator extends SubsystemBase {
 				.maxAcceleration(Constants.ELEVATOR_MAX_ACCELLERATION)
 				.allowedClosedLoopError(1);
 
+		masterMotorConfig.inverted(Constants.Elevator_INVERTED);
+		followerMotorConfig.inverted(!Constants.Elevator_INVERTED);
+
 		masterMotor.configure(masterMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 		followerMotorConfig.follow(masterMotor, true);
 		followerMotor.configure(followerMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+	}
+
+	/**
+	 * used to reset the elevator do not use in game
+	 */
+	public void setIdleMode(IdleMode idleMode) {
+		masterMotorConfig.idleMode(idleMode);
+		followerMotorConfig.idleMode(idleMode);
+
+		masterMotor.configureAsync(masterMotorConfig, ResetMode.kNoResetSafeParameters,
+				PersistMode.kNoPersistParameters);
+		followerMotor.configureAsync(followerMotorConfig, ResetMode.kNoResetSafeParameters,
+				PersistMode.kNoPersistParameters);
 	}
 
 	public void resetPosition() {
@@ -68,7 +92,7 @@ public class Elevator extends SubsystemBase {
 	 * 
 	 * @param point the specified location
 	 */
-	public void moveElevator(double point) {
+	public void moveElevatorToPose(double point) {
 		closedLoopController.setReference(point, ControlType.kMAXMotionPositionControl,
 				ClosedLoopSlot.kSlot0);
 	}
