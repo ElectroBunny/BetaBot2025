@@ -39,8 +39,4 @@ public class CoralScorer extends SubsystemBase {
 
 		return instance;
 	}
-
-	@Override
-	public void periodic() {
-	}
 }

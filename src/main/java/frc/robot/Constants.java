@@ -30,24 +30,24 @@ public final class Constants {
 	}
 
 	// Elevator constants
-	public static final double ELEVATOR_POSITION_TOLERANCE = 0.5;
+	public static final double ELEVATOR_POSITION_TOLERANCE = 0.1;
 	public static final int ELEVATOR_MASTER_MOTOR_ID = 37;
 	public static final int ELEVATOR_FOLLOWER_MOTOR_ID = 40;
 	public static final double ELEVATOR_CONVERSION_FACTOR = 25;
 	public static final double ELEVATOR_ROLLER_RAIDUS = 3;
-	public static final double ELEVATOR_MAX_VELO = 1000;
-	public static final double ELEVATOR_MAX_ACCELLERATION = 1000;
-	public static final double ELEVATOR_P = 0.4;
+	public static final double ELEVATOR_MAX_VELO = 1500;
+	public static final double ELEVATOR_MAX_ACCELLERATION = 3000;
+	public static final double ELEVATOR_P = 0.02;
 	public static final double ELEVATOR_I = 0.0;
 	public static final double ELEVATOR_D = 0.0;
 	public static final int ELEVATOR_CURRENT_LIMIT = 40;
-  	public static final double ELEVATOR_MANUAL_POWER = 0.5;
+  	public static final double ELEVATOR_MANUAL_POWER = 0.1;
   	public static final double L1_HEIGHT = 0;
   	public static final double L2_HEIGHT = 0;
   	public static final double L3_HEIGHT = 0;
   	public static final double L4_HEIGHT = 0;
   	public static final double CLOSED_HEIGHT = 0;
-	public static final boolean Elevator_INVERTED = false;
+	public static final boolean Elevator_INVERTED = true;
 
 	// Automatic constants
 	public static final double AUTO_POSITION = 3.0;
