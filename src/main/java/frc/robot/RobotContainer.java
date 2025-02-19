@@ -19,9 +19,11 @@ import frc.robot.subsystems.Elevator;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -31,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.Constants;
 import java.io.File;
 import java.time.Instant;
 
@@ -38,7 +41,7 @@ import swervelib.SwerveInputStream;
 
 public class RobotContainer {
 
-	final CommandXboxController driverController = new CommandXboxController(0);
+	final PS5Controller driverController = new PS5Controller(0);
 	final CommandJoystick logiJoystick = new CommandJoystick(1);
 
 	private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
@@ -114,22 +117,33 @@ public class RobotContainer {
 		// MoveElevatorManually(Constants.ELEVATOR_MANUAL_POWER));
 		// driverController.circle().whileTrue(new
 		// MoveElevatorManually(-Constants.ELEVATOR_MANUAL_POWER));
-		driverController.y().whileTrue(new MoveElevatorManually(1));
-		driverController.a().whileTrue(new MoveElevatorManually(-0.2));
+		//driverController.y().whileTrue(new MoveElevatorManually(1));
+		//driverController.a().whileTrue(new MoveElevatorManually(-0.2));
 		
-		driverController.y().onFalse(new MoveElevatorManually(0));
-		driverController.a().onFalse(new MoveElevatorManually(0));
+		//driverController.y().onFalse(new MoveElevatorManually(0));
+		//driverController.a().onFalse(new MoveElevatorManually(0));
 
 		
-		driverController.povUp().whileTrue(new MoveElevatorToPlace(25));
-		driverController.povDown().whileTrue(new MoveElevatorToPlace(10));
+		//driverController.povUp().whileTrue(new MoveElevatorToPlace(25));
+		//driverController.povDown().whileTrue(new MoveElevatorToPlace(10));
+
+		driverController.R2().whileTrue(new ScoreCoral(Constants.CORAL_SCORE_POWER));
+		driverController.R2.onFalse(new CollectAlgae(0));
+		
+		driverController.L2().whileTrue(new ScoreCoral(Constants.CORAL_SCORE_POWER));
+		driverController.L2().onFalse(new CollectAlgae(0));
+
+		driverController.circle().onTrue(new MoveElevatorToPlace(Constants.L2_HEIGHT));
+		driverController.triangle().onTrue(new MoveElevatorToPlace(Constants.L3_HEIGHT));
+		driverController.square().onTrue(new MoveElevatorToPlace(Constants.L4_HEIGHT));
+		driverController.cross().onTrue(new MoveElevatorToPlace(Constants.CLOSED_HEIGHT));
 
 		// driverController.povUp().whileTrue(Elevator.getInstance().sysIdQuasistatic(Direction.kForward));
 		// driverController.povDown().whileTrue(Elevator.getInstance().sysIdQuasistatic(Direction.kReverse));
 		// driverController.povLeft().whileTrue(Elevator.getInstance().sysIdDynamic(Direction.kForward));
 		// driverController.povRight().whileTrue(Elevator.getInstance().sysIdDynamic(Direction.kReverse));
 
-		// driverController.circle().whileTrue(new ScoreCoral(0.5));
+		//driverController.circle().whileTrue(new ScoreCoral(0.5));
 
 		// driverController.povRight().onTrue(new
 		// MoveElevatorToPlace(Constants.L1_HEIGHT));
