@@ -38,7 +38,7 @@ import swervelib.SwerveInputStream;
 
 public class RobotContainer {
 
-	final CommandXboxController driverController = new CommandXboxController(0);
+	final CommandPS5Controller driverController = new CommandPS5Controller(0);
 	final CommandJoystick logiJoystick = new CommandJoystick(1);
 
 	private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
@@ -114,11 +114,11 @@ public class RobotContainer {
 		// MoveElevatorManually(Constants.ELEVATOR_MANUAL_POWER));
 		// driverController.circle().whileTrue(new
 		// MoveElevatorManually(-Constants.ELEVATOR_MANUAL_POWER));
-		driverController.y().whileTrue(new MoveElevatorManually(1));
-		driverController.a().whileTrue(new MoveElevatorManually(-0.2));
+		// driverController.y().whileTrue(new MoveElevatorManually(1));
+		// driverController.a().whileTrue(new MoveElevatorManually(-0.2));
 		
-		driverController.y().onFalse(new MoveElevatorManually(0));
-		driverController.a().onFalse(new MoveElevatorManually(0));
+		// driverController.y().onFalse(new MoveElevatorManually(0));
+		// driverController.a().onFalse(new MoveElevatorManually(0));
 
 		
 		driverController.povUp().whileTrue(new MoveElevatorToPlace(25));
