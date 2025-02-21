@@ -37,7 +37,7 @@ public class RobotContainer {
 	final CommandPS5Controller operatorController = new CommandPS5Controller(1);
 	final CommandJoystick logiJoystick = new CommandJoystick(1);
 
-	private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+	public final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
 			"swerve"));
 
 	DoubleSupplier swerveSpeedScaleTranslation = () -> 1;
@@ -104,8 +104,8 @@ public class RobotContainer {
 		drivebase.setDefaultCommand(
 				!RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedAnglularVelocitySim);
 
-		driverController.L2().whileTrue(new ScoreCoral(0.25));
-		driverController.square().onTrue(new )
+		driverController.L2().whileTrue(new ScoreCoral(0.05));
+		// driverController.square().onTrue(new )
 
 		operatorController.povUp().whileTrue(new MoveElevatorManually(0.3));
 		operatorController.povDown().whileTrue(new MoveElevatorManually(-0.2));
@@ -133,7 +133,6 @@ public class RobotContainer {
 					swerveSpeedScaleRotation = () -> 1;
 				}));
 
-		driverController.povUp().whileTrue(new MoveElevatorManually(1));
 	}
 
 	public void logInitialize() {
