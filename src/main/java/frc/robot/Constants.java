@@ -9,10 +9,10 @@ import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
 
 public final class Constants {
-	public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
+	public static final double ROBOT_MASS = 50; // 32lbs * kg per pound
 	public static final Matter CHASSIS = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
 	public static final double LOOP_TIME = 0.13; // s, 20ms + 110ms sprk max velocity lag
-	public static final double MAX_SPEED = Units.feetToMeters(14.5);
+	public static final double MAX_SPEED = 4.5;
 	// Maximum speed of the robot in meters per second, used to limit acceleration.
 
 	public static final class DrivebaseConstants {
@@ -31,22 +31,23 @@ public final class Constants {
 
 	// Elevator constants
 	public static final double ELEVATOR_POSITION_TOLERANCE = 0.1;
-	public static final int ELEVATOR_MASTER_MOTOR_ID = 37;
-	public static final int ELEVATOR_FOLLOWER_MOTOR_ID = 40;
 	public static final double ELEVATOR_CONVERSION_FACTOR = 25;
 	public static final double ELEVATOR_ROLLER_RAIDUS = 3;
-	public static final double ELEVATOR_MAX_VELO = 1500;
-	public static final double ELEVATOR_MAX_ACCELLERATION = 3000;
-	public static final double ELEVATOR_P = 0.02;
+	public static final int ELEVATOR_MASTER_MOTOR_ID = 37;
+	public static final int ELEVATOR_FOLLOWER_MOTOR_ID = 40;
+	public static final double ELEVATOR_MAX_VELO = 3500;
+	public static final double ELEVATOR_MAX_ACCELLERATION = 9000;
+	public static final double ELEVATOR_P = 0.08;
 	public static final double ELEVATOR_I = 0.0;
-	public static final double ELEVATOR_D = 0.0;
+	public static final double ELEVATOR_D = 0.09;
 	public static final int ELEVATOR_CURRENT_LIMIT = 40;
   	public static final double ELEVATOR_MANUAL_POWER = 0.1;
   	public static final double L1_HEIGHT = 0;
-  	public static final double L2_HEIGHT = 0;
-  	public static final double L3_HEIGHT = 0;
+  	public static final double L2_HEIGHT = 10;
+  	public static final double L3_HEIGHT = 26;
   	public static final double L4_HEIGHT = 0;
-  	public static final double CLOSED_HEIGHT = 0;
+  	public static final double CLOSED_HEIGHT = 2;
+	public static final double INTAKE_HEIGHT = 5;
 	public static final boolean Elevator_INVERTED = true;
 
 	// Automatic constants
@@ -73,6 +74,14 @@ public final class Constants {
 
 	// Coral scores constants
 	public static final int CORAL_SCORER_MOTOR_ID = 26;
-	public static final int CORAL_SCORER_CURRENT_LIMIT = 40;
-  	public static final double CORAL_SCORE_POWER = 0.5;
+	public static final int CORAL_SCORER_CURRENT_LIMIT = 110;
+  	public static final double CORAL_SCORE_POWER = 0.05;
+	  public static final double CORAL_SCORER_MAX_VELO = 3500;
+	  public static final double CORAL_SCORER_MAX_ACCELLERATION = 12000;
+	  public static final double CORAL_SCORER_P = 10;
+	  public static final double CORAL_SCORER_I = 0;
+	  public static final double CORAL_SCORER_D = 0;
+	  public static final double CORAL_SCORER_POSITION_TOLERANCE = 0.1;
+	  public static final double CORAL_SCORER_INTAKE_CURRENT_LIMIT = 50;
+	  public static final double CORAL_SCORER_INTAKE_ROTS = 0.8;
 }

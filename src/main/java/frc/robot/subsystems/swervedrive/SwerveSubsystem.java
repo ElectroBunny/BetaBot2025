@@ -62,7 +62,7 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * AprilTag field layout.
    */
-  private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
+  private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
   /**
    * Enable vision odometry updates while driving.
    */
@@ -97,7 +97,8 @@ public class SwerveSubsystem extends SubsystemBase {
                                              // angle.
     swerveDrive.setCosineCompensator(false);// !SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for
                                             // simulations since it causes discrepancies not seen in real life.
-    swerveDrive.setAngularVelocityCompensation(false,
+    swerveDrive.setAngularVelocityCompensation(true
+    ,
         false,
         0.1); // Correct for skew that gets worse as angular velocity increases. Start with a
               // coefficient of 0.1.

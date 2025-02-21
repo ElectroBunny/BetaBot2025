@@ -19,11 +19,11 @@ public class MoveElevatorToPlace extends Command {
 
 	@Override
 	public void initialize() {
+		elevator.moveElevatorToPose(targetPose);
 	}
 
 	@Override
 	public void execute() {
-		elevator.moveElevatorToPose(targetPose);
 	}
 
 	@Override
