@@ -34,24 +34,36 @@ public final class Constants {
 	public static final double ELEVATOR_CONVERSION_FACTOR = 25;
 	public static final double ELEVATOR_ROLLER_RAIDUS = 3;
 	public static final int ELEVATOR_MASTER_MOTOR_ID = 37;
-	public static final int ELEVATOR_FOLLOWER_MOTOR_ID = 40;
+	public static final int ELEVATOR_FOLLOWER_MOTOR_ID = 25;
 	public static final double ELEVATOR_MAX_VELO = 3500;
-	public static final double ELEVATOR_MAX_ACCELLERATION = 9000;
-	public static final double ELEVATOR_P = 0.08;
+	public static final double ELEVATOR_MAX_ACCELLERATION = 7000;
+	public static final double ELEVATOR_P = 0.03;
 	public static final double ELEVATOR_I = 0.0;
-	public static final double ELEVATOR_D = 0.09;
+	public static final double ELEVATOR_D = 0;
 	public static final int ELEVATOR_CURRENT_LIMIT = 40;
   	public static final double ELEVATOR_MANUAL_POWER = 0.1;
   	public static final double L1_HEIGHT = 0;
-  	public static final double L2_HEIGHT = 10;
-  	public static final double L3_HEIGHT = 26;
+  	public static final double L2_HEIGHT = 8.5;
+  	public static final double L3_HEIGHT = 24;
   	public static final double L4_HEIGHT = 0;
-  	public static final double CLOSED_HEIGHT = 2;
+  	public static final double CLOSED_HEIGHT = 1;
 	public static final double INTAKE_HEIGHT = 5;
 	public static final boolean Elevator_INVERTED = true;
 
-	// Automatic constants
-	public static final double AUTO_POSITION = 3.0;
+	// Auto constants
+	public static final double X_REEF_ALIGNMENT_P = 2.5;
+	public static final double Y_REEF_ALIGNMENT_P = 4.5;
+	public static final double ROT_REEF_ALIGNMENT_P = 0.058;
+
+	public static final double ROT_SETPOINT_REEF_ALIGNMENT = 0;  // Rotation
+	public static final double ROT_TOLERANCE_REEF_ALIGNMENT = 0.5;
+	public static final double X_SETPOINT_REEF_ALIGNMENT = -0.51;  // Vertical pose
+	public static final double X_TOLERANCE_REEF_ALIGNMENT = 0.005;
+	public static final double Y_SETPOINT_REEF_ALIGNMENT = 0.22;  // Horizontal pose
+	public static final double Y_TOLERANCE_REEF_ALIGNMENT = 0.005;
+
+	public static final double DONT_SEE_TAG_WAIT_TIME = 1;
+	public static final double POSE_VALIDATION_TIME = 0.3;
 
 	// Algae intake constants
 	public static final int ALGAE_INTAKE_MOTOR_ID = 22;
