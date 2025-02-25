@@ -30,7 +30,7 @@ public class MoveAlgaeArmToAngle extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    arm.setSpeed(stayStable ? 0.01 : 0);
+    arm.setSpeed(stayStable ? 0.02 : 0);
   }
 
   @Override

@@ -44,7 +44,7 @@ import swervelib.SwerveInputStream;
 public class RobotContainer {
 	final CommandPS5Controller driverController = new CommandPS5Controller(0);
 	final CommandPS5Controller operatorController = new CommandPS5Controller(1);
-	final CommandJoystick logiJoystick = new CommandJoystick(2);
+	// final CommandJoystick logiJoystick = new CommandJoystick(2);
 
 	public final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
 			"swerve"));
@@ -95,10 +95,6 @@ public class RobotContainer {
 
 
 	public RobotContainer() {
-		// Creating a named command for the auto part
-		// NamedCommands.registerCommand("MoveArmToPosAuto", new
-		// MoveElevatorToPlace(Constants.AUTO_POSITION));
-
 		// Configure the trigger bindings
 		configureBindings();
 		DriverStation.silenceJoystickConnectionWarning(true);
@@ -118,31 +114,48 @@ public class RobotContainer {
 	}
 
 	private void configureBindings() {
-		// (Condition) ? Return-On-True : Return-on-False
+
 		drivebase.setDefaultCommand(
 				!RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedAnglularVelocitySim);
+		
+		// Algae
+		operatorController.povRight().onTrue(new MoveAlgaeArmToAngle(Constants.ALGAE_ARM_OPEN_SPEED, Constants.ALGAE_ARM_REEF_POSE, true));
+		operatorController.povLeft().onTrue(new MoveAlgaeArmToAngle(Constants.ALGAE_ARM_CLOSE_SPEED, Constants.ALGAE_ARM_CLOSED_POSE, false));
+		operatorController.L2().whileTrue(new ScoreAlgae(Constants.ALGAE_INTAKE_POWER));
+		operatorController.R2().whileTrue(new ScoreAlgae(-Constants.ALGAE_INTAKE_POWER));
 
-		logiJoystick.button(3).whileTrue(new MoveElevatorManually(0.3));
-		logiJoystick.button(4).whileTrue(new MoveElevatorManually(-0.2));
+		// Coral score
+		operatorController.L1().whileTrue(new ScoreCoral(Constants.CORAL_SCORE_POWER));
+		operatorController.options().whileTrue(new ScoreCoral(-Constants.CORAL_SCORE_POWER));
 
-		operatorController.L1().whileTrue(new ScoreCoral(0.1));
-		operatorController.L2().whileTrue(new ScoreCoral(-0.1));
+		// Auto intake
 		operatorController.R1().onTrue(new MoveElevatorToPlace(0)
 				.andThen(new IntakeCoralByCurrent(0.25))
 				.andThen(new MoveElevatorToPlace(Constants.INTAKE_HEIGHT)
-						.andThen(new IntakeCoralPID(Constants.CORAL_SCORE_POWER))
-						.andThen(new MoveElevatorToPlace(1))));
+						.andThen(new IntakeCoralPID(Constants.AUTO_CORAL_INTAKE_POWER))
+						.andThen(new MoveElevatorToPlace(Constants.CLOSED_HEIGHT))));
+		
+		// Stop auto intake
 		operatorController.circle().onTrue(new InstantCommand(() -> coralScorer.setPower(0)));
+		
+		// Elevator manual
+		operatorController.povUp().whileTrue(new MoveElevatorManually(0.3));
+		operatorController.povDown().whileTrue(new MoveElevatorManually(-0.2));
 
+		// Elevator auto poses
 		operatorController.triangle().onTrue(new MoveElevatorToPlace(Constants.L3_HEIGHT));
 		operatorController.square().onTrue(new MoveElevatorToPlace(Constants.L2_HEIGHT));
 		operatorController.cross().onTrue(new MoveElevatorToPlace(Constants.INTAKE_HEIGHT).andThen(new MoveElevatorToPlace(Constants.CLOSED_HEIGHT)));
 
+		// Reef alignment
 		driverController.povRight().onTrue(new AlignToReefTagRelative(true, drivebase));
 		driverController.povLeft().onTrue(new AlignToReefTagRelative(false, drivebase));
 
+		// Reset swerve and elevator positions
 		driverController.options().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+		driverController.create().onTrue(new InstantCommand(() -> elevator.resetPosition()));
 
+		// Slow drive
 		driverController.R2().onTrue(new InstantCommand(() -> {
 			swerveSpeedScaleTranslation = () -> 0.3;
 			swerveSpeedScaleRotation = () -> 0.7;
@@ -151,14 +164,6 @@ public class RobotContainer {
 					swerveSpeedScaleTranslation = () -> 1;
 					swerveSpeedScaleRotation = () -> 1;
 				}));
-		
-		logiJoystick.povUp().whileTrue(new MoveAlgaeArmManually(0.1));
-		logiJoystick.povDown().whileTrue(new MoveAlgaeArmManually(-0.05));
-		logiJoystick.button(1).onTrue(new MoveAlgaeArmToAngle(0.1, Constants.ALGAE_ARM_REEF_POSE, true));
-		logiJoystick.button(2).onTrue(new MoveAlgaeArmToAngle(-0.04, Constants.ALGAE_ARM_CLOSED_POSE2, false));
-		logiJoystick.povRight().whileTrue(new ScoreAlgae(0.6));
-		logiJoystick.povLeft().whileTrue(new ScoreAlgae(-0.6));
-
 	}
 
 	public void logInitialize() {

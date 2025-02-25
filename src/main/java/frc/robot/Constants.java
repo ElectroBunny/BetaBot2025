@@ -68,9 +68,8 @@ public final class Constants {
 	// Algae intake constants
 	public static final int ALGAE_INTAKE_MOTOR_ID = 34;
 	public static final int ALGAE_INTAKE_CURRENT_LIMIT = 40;
-	public static final double ALGAE_INTAKE_VELOCITY_GAIN_TIME = 0.5;
 	public static final double ALGAE_INTAKE_STOP_VELOCITY = 0;
-  	public static final double ALGAE_INTAKE_POWER = 0.4;
+  	public static final double ALGAE_INTAKE_POWER = 0.6;
 	public static final int ALGAE_ENCODER_DIO = 9;
 
 	// Algae arm constants
@@ -83,13 +82,16 @@ public final class Constants {
 	public static final double ALGAE_ARM_MAX_ACCEL = 0;
 	public static final double ALGAE_ARM_TOLERANCE = 0.01;
 	public static final double ALGAE_ARM_REEF_POSE = 0.45;
-	public static final double ALGAE_ARM_CLOSED_POSE = 0.171;
-	public static final double ALGAE_ARM_CLOSED_POSE2 = 0.2282;
+	public static final double ALGAE_ARM_POSE_IN_FRAME = 0.171;
+	public static final double ALGAE_ARM_CLOSED_POSE = 0.2282;  // Out of frame perimeter
+	public static final double ALGAE_ARM_OPEN_SPEED = 0.1;
+	public static final double ALGAE_ARM_CLOSE_SPEED = -0.04;
 
 	// Coral scores constants
 	public static final int CORAL_SCORER_MOTOR_ID = 26;
 	public static final int CORAL_SCORER_CURRENT_LIMIT = 110;
-  	public static final double CORAL_SCORE_POWER = 0.05;
+	public static final double CORAL_SCORE_POWER = 0.1;
+  	public static final double AUTO_CORAL_INTAKE_POWER = 0.05;
 	  public static final double CORAL_SCORER_MAX_VELO = 3500;
 	  public static final double CORAL_SCORER_MAX_ACCELLERATION = 12000;
 	  public static final double CORAL_SCORER_P = 10;
