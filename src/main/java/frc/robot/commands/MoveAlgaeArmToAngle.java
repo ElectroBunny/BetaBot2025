@@ -8,25 +8,30 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AlgaeArm;
 
 public class MoveAlgaeArmToAngle extends Command {
-  private double angle;
+  private double speed, angle;
   private AlgaeArm arm;
+  private boolean stayStable;
 
-  public MoveAlgaeArmToAngle(double angle) {
+  public MoveAlgaeArmToAngle(double speed, double angle, boolean stayStable) {
+    this.speed = speed;
     this.angle = angle;
+    this.stayStable = stayStable;
     this.arm = AlgaeArm.getInstance();
     addRequirements(this.arm);
   }
 
   @Override
   public void initialize() {
-    this.arm.setAngle(angle);
+    this.arm.setSpeed(speed);
   }
 
   @Override
   public void execute() {}
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    arm.setSpeed(stayStable ? 0.01 : 0);
+  }
 
   @Override
   public boolean isFinished() {

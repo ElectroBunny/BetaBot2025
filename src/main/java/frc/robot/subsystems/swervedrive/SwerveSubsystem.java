@@ -376,7 +376,7 @@ public class SwerveSubsystem extends SubsystemBase {
    *         given speed
    */
   public Command driveToDistanceCommand(double distanceInMeters, double speedInMetersPerSecond) {
-    return run(() -> drive(new ChassisSpeeds(speedInMetersPerSecond, 0, 0)))
+    return run(() ->  drive(new Translation2d(speedInMetersPerSecond, 0), 0, false))
         .until(() -> swerveDrive.getPose().getTranslation().getDistance(new Translation2d(0, 0)) > distanceInMeters);
   }
 

@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -16,6 +16,8 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -23,30 +25,31 @@ public class AlgaeArm extends SubsystemBase {
   private SparkFlex motor;
   private SparkFlexConfig motorConfig;
   private SparkClosedLoopController closedLoopController;
-  private AbsoluteEncoder encoder;
   private static AlgaeArm instance = null;
+  private DutyCycleEncoder absEncoder;
+  private RelativeEncoder motorEncoder;
 
   public AlgaeArm() {
     this.motor = new SparkFlex(Constants.ALGAE_ARM_MOTOR_ID, MotorType.kBrushless);
     this.closedLoopController = this.motor.getClosedLoopController();
-    this.encoder = this.motor.getAbsoluteEncoder();
+    this.absEncoder = new DutyCycleEncoder(Constants.ALGAE_ENCODER_DIO);
+
+    this.motorEncoder = this.motor.getEncoder();
+    // this.encoder = new DutyCycleEncoder(Constants.ALGAE_ENCODER_DIO, 1, 0.1);
     
     motorConfig = new SparkFlexConfig();
     this.motorConfig.encoder.positionConversionFactor(Constants.ALGAE_ARM_CONVERSION_FACTOR);
     this.motorConfig.idleMode(IdleMode.kBrake);
 
-    this.motorConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+    this.motorConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
     .p(Constants.ALGAE_ARM_P)
     .i(Constants.ALGAE_ARM_I)
     .d(Constants.ALGAE_ARM_D)
     .outputRange(-1, 1);
 
-    this.motorConfig.closedLoop.maxMotion
-    .maxVelocity(Constants.ALGAE_ARM_MAX_VEL)
-    .maxAcceleration(Constants.ALGAE_ARM_MAX_ACCEL)
-    .allowedClosedLoopError(1);
-
     this.motor.configure(this.motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    this.motorEncoder.setPosition(absEncoder.get());
   }
 
   /**
@@ -55,7 +58,7 @@ public class AlgaeArm extends SubsystemBase {
    */
   public void setAngle(double angle)
   {
-    this.closedLoopController.setReference(angle, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0);
+    this.closedLoopController.setReference(angle, ControlType.kDutyCycle, ClosedLoopSlot.kSlot0);
   }
 
   /***
@@ -64,7 +67,7 @@ public class AlgaeArm extends SubsystemBase {
    * @return whether the motor has reached the angle.
    */
   public boolean isAtAngle(double angle) {
-    return Math.abs(angle - encoder.getPosition()) <= Constants.ALGAE_ARM_TOLERANCE;
+    return Math.abs(angle - absEncoder.get()) <= Constants.ALGAE_ARM_TOLERANCE;
   }
 
   public void setSpeed(double speed) {
@@ -90,6 +93,6 @@ public class AlgaeArm extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Algae Abs Encoder", absEncoder.get());
   }
 }

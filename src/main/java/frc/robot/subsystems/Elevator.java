@@ -67,9 +67,9 @@ public class Elevator extends SubsystemBase {
 		masterMotorConfig.inverted(Constants.Elevator_INVERTED);
 		followerMotorConfig.inverted(!Constants.Elevator_INVERTED);
 
-		masterMotor.configure(masterMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+		masterMotor.configure(masterMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 		followerMotorConfig.follow(masterMotor, true);
-		followerMotor.configure(followerMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+		followerMotor.configure(followerMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 		
 		encoder = masterMotor.getEncoder();
 	}

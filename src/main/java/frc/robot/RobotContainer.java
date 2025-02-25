@@ -6,20 +6,29 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.MoveElevatorToPlace;
+import frc.robot.commands.ScoreAlgae;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
+import frc.robot.commands.AlignToReefTagRelative;
 import frc.robot.commands.IntakeCoralByCurrent;
 import frc.robot.commands.IntakeCoralPID;
+import frc.robot.commands.MoveAlgaeArmManually;
+import frc.robot.commands.MoveAlgaeArmToAngle;
 import frc.robot.commands.MoveElevatorManually;
 import frc.robot.commands.ScoreCoral;
+import frc.robot.commands.swervedrive.auto.AutoDiagonalL2;
+import frc.robot.commands.swervedrive.auto.AutoForward;
 import frc.robot.subsystems.CoralScorer;
 import frc.robot.subsystems.Elevator;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -35,7 +44,7 @@ import swervelib.SwerveInputStream;
 public class RobotContainer {
 	final CommandPS5Controller driverController = new CommandPS5Controller(0);
 	final CommandPS5Controller operatorController = new CommandPS5Controller(1);
-	final CommandJoystick logiJoystick = new CommandJoystick(1);
+	final CommandJoystick logiJoystick = new CommandJoystick(2);
 
 	public final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
 			"swerve"));
@@ -82,6 +91,9 @@ public class RobotContainer {
 	private Elevator elevator;
 	private CoralScorer coralScorer;
 
+	SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+
 	public RobotContainer() {
 		// Creating a named command for the auto part
 		// NamedCommands.registerCommand("MoveArmToPosAuto", new
@@ -97,6 +109,12 @@ public class RobotContainer {
 
 		new Trigger(() -> RobotController.getUserButton())
 				.onTrue(new InstantCommand(() -> resetEncoderPositions()));
+
+		m_chooser.addOption("L2Right", new AutoDiagonalL2(drivebase, true));
+		m_chooser.addOption("L2Left", new AutoDiagonalL2(drivebase, false));
+		m_chooser.addOption("forward", new AutoForward(drivebase, 2.5, 1.5));
+
+		SmartDashboard.putData(m_chooser);
 	}
 
 	private void configureBindings() {
@@ -104,34 +122,42 @@ public class RobotContainer {
 		drivebase.setDefaultCommand(
 				!RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedAnglularVelocitySim);
 
-		driverController.L2().whileTrue(new ScoreCoral(0.05));
-		// driverController.square().onTrue(new )
+		logiJoystick.button(3).whileTrue(new MoveElevatorManually(0.3));
+		logiJoystick.button(4).whileTrue(new MoveElevatorManually(-0.2));
 
-		operatorController.povUp().whileTrue(new MoveElevatorManually(0.3));
-		operatorController.povDown().whileTrue(new MoveElevatorManually(-0.2));
-
-		operatorController.L2().whileTrue(new ScoreCoral(-Constants.CORAL_SCORE_POWER));
-		operatorController.R2().onTrue(new MoveElevatorToPlace(Constants.CLOSED_HEIGHT)
+		operatorController.L1().whileTrue(new ScoreCoral(0.1));
+		operatorController.L2().whileTrue(new ScoreCoral(-0.1));
+		operatorController.R1().onTrue(new MoveElevatorToPlace(0)
 				.andThen(new IntakeCoralByCurrent(0.25))
 				.andThen(new MoveElevatorToPlace(Constants.INTAKE_HEIGHT)
 						.andThen(new IntakeCoralPID(Constants.CORAL_SCORE_POWER))
-						.andThen(new MoveElevatorToPlace(Constants.CLOSED_HEIGHT))));
-		operatorController.square().onTrue(new InstantCommand(() -> coralScorer.setPower(0)));
+						.andThen(new MoveElevatorToPlace(1))));
+		operatorController.circle().onTrue(new InstantCommand(() -> coralScorer.setPower(0)));
 
-		operatorController.circle().onTrue(new MoveElevatorToPlace(Constants.L3_HEIGHT));
-		operatorController.triangle().onTrue(new MoveElevatorToPlace(Constants.L2_HEIGHT));
-		operatorController.cross().onTrue(new MoveElevatorToPlace(Constants.CLOSED_HEIGHT));
+		operatorController.triangle().onTrue(new MoveElevatorToPlace(Constants.L3_HEIGHT));
+		operatorController.square().onTrue(new MoveElevatorToPlace(Constants.L2_HEIGHT));
+		operatorController.cross().onTrue(new MoveElevatorToPlace(Constants.INTAKE_HEIGHT).andThen(new MoveElevatorToPlace(Constants.CLOSED_HEIGHT)));
+
+		driverController.povRight().onTrue(new AlignToReefTagRelative(true, drivebase));
+		driverController.povLeft().onTrue(new AlignToReefTagRelative(false, drivebase));
 
 		driverController.options().onTrue((Commands.runOnce(drivebase::zeroGyro)));
 
 		driverController.R2().onTrue(new InstantCommand(() -> {
 			swerveSpeedScaleTranslation = () -> 0.3;
-			swerveSpeedScaleRotation = () -> 0.5;
+			swerveSpeedScaleRotation = () -> 0.7;
 		}))
 				.onFalse(new InstantCommand(() -> {
 					swerveSpeedScaleTranslation = () -> 1;
 					swerveSpeedScaleRotation = () -> 1;
 				}));
+		
+		logiJoystick.povUp().whileTrue(new MoveAlgaeArmManually(0.1));
+		logiJoystick.povDown().whileTrue(new MoveAlgaeArmManually(-0.05));
+		logiJoystick.button(1).onTrue(new MoveAlgaeArmToAngle(0.1, Constants.ALGAE_ARM_REEF_POSE, true));
+		logiJoystick.button(2).onTrue(new MoveAlgaeArmToAngle(-0.04, Constants.ALGAE_ARM_CLOSED_POSE2, false));
+		logiJoystick.povRight().whileTrue(new ScoreAlgae(0.6));
+		logiJoystick.povLeft().whileTrue(new ScoreAlgae(-0.6));
 
 	}
 
@@ -147,7 +173,7 @@ public class RobotContainer {
 	 */
 	public Command getAutonomousCommand() {
 		// An example command will be run in autonomous
-		return drivebase.getAutonomousCommand("New Auto");
+		return m_chooser.getSelected();
 	}
 
 	public void setMotorBrake(boolean brake) {
@@ -157,5 +183,10 @@ public class RobotContainer {
 	public void resetEncoderPositions() {
 		elevator.resetPosition();
 		coralScorer.resetPosition();
+		drivebase.zeroGyro();
 	}
+
+	public void startCamera() {
+    	CameraServer.startAutomaticCapture().setResolution(320, 180);
+  	}
 }
