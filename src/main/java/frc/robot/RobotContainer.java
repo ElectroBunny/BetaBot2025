@@ -108,7 +108,7 @@ public class RobotContainer {
 
 		m_chooser.addOption("L2Right", new AutoDiagonalL2(drivebase, true));
 		m_chooser.addOption("L2Left", new AutoDiagonalL2(drivebase, false));
-		m_chooser.addOption("forward", new AutoForward(drivebase, 2.5, 1.5));
+		m_chooser.addOption("forward", new AutoForward(drivebase));
 
 		SmartDashboard.putData(m_chooser);
 	}
