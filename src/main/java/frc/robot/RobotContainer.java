@@ -148,8 +148,8 @@ public class RobotContainer {
 		operatorController.cross().onTrue(new MoveElevatorToPlace(Constants.INTAKE_HEIGHT).andThen(new MoveElevatorToPlace(Constants.CLOSED_HEIGHT)));
 
 		// Reef alignment
-		driverController.povRight().onTrue(new AlignToReefTagRelative(true, drivebase));
-		driverController.povLeft().onTrue(new AlignToReefTagRelative(false, drivebase));
+		driverController.povRight().onTrue(new AlignToReefTagRelative(true, drivebase).withTimeout(3));
+		driverController.povLeft().onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(3));
 
 		// Reset swerve and elevator positions
 		driverController.options().onTrue((Commands.runOnce(drivebase::zeroGyro)));
