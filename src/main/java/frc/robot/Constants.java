@@ -44,7 +44,7 @@ public final class Constants {
   	public static final double ELEVATOR_MANUAL_POWER = 0.1;
   	public static final double L1_HEIGHT = 0;
   	public static final double L2_HEIGHT = 8.5;
-  	public static final double L3_HEIGHT = 24;
+  	public static final double L3_HEIGHT = 25.5;
   	public static final double L4_HEIGHT = 0;
   	public static final double CLOSED_HEIGHT = 1;
 	public static final double INTAKE_HEIGHT = 5;
@@ -57,9 +57,9 @@ public final class Constants {
 
 	public static final double ROT_SETPOINT_REEF_ALIGNMENT = 0;  // Rotation
 	public static final double ROT_TOLERANCE_REEF_ALIGNMENT = 0.5;
-	public static final double X_SETPOINT_REEF_ALIGNMENT = -0.51;  // Vertical pose
+	public static final double X_SETPOINT_REEF_ALIGNMENT = -0.5;  // Vertical pose
 	public static final double X_TOLERANCE_REEF_ALIGNMENT = 0.005;
-	public static final double Y_SETPOINT_REEF_ALIGNMENT = 0.22;  // Horizontal pose
+	public static final double Y_SETPOINT_REEF_ALIGNMENT = 0.19;  // Horizontal pose
 	public static final double Y_TOLERANCE_REEF_ALIGNMENT = 0.005;
 
 	public static final double DONT_SEE_TAG_WAIT_TIME = 1;
