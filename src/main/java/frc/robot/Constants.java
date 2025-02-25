@@ -92,12 +92,18 @@ public final class Constants {
 	public static final int CORAL_SCORER_CURRENT_LIMIT = 110;
 	public static final double CORAL_SCORE_POWER = 0.1;
   	public static final double AUTO_CORAL_INTAKE_POWER = 0.05;
-	  public static final double CORAL_SCORER_MAX_VELO = 3500;
-	  public static final double CORAL_SCORER_MAX_ACCELLERATION = 12000;
-	  public static final double CORAL_SCORER_P = 10;
-	  public static final double CORAL_SCORER_I = 0;
-	  public static final double CORAL_SCORER_D = 0;
-	  public static final double CORAL_SCORER_POSITION_TOLERANCE = 0.1;
-	  public static final double CORAL_SCORER_INTAKE_CURRENT_LIMIT = 50;
-	  public static final double CORAL_SCORER_INTAKE_ROTS = 0.8;
+	public static final double CORAL_SCORER_MAX_VELO = 3500;
+	public static final double CORAL_SCORER_MAX_ACCELLERATION = 12000;
+	public static final double CORAL_SCORER_P = 10;
+	public static final double CORAL_SCORER_I = 0;
+	public static final double CORAL_SCORER_D = 0;
+	public static final double CORAL_SCORER_POSITION_TOLERANCE = 0.1;
+	public static final double CORAL_SCORER_INTAKE_CURRENT_LIMIT = 50;
+	public static final double CORAL_SCORER_INTAKE_ROTS = 0.8;
+
+	// Swerve offsets
+	public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = 297.334;
+	public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 5.801;
+	public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 290.215;
+	public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = 324.229;
 }

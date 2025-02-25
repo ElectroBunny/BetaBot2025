@@ -29,6 +29,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -71,6 +72,8 @@ public class SwerveSubsystem extends SubsystemBase {
    * PhotonVision class to keep an accurate odometry.
    */
   // private Vision vision;
+
+  private double relativeFrontLeft, relativeFrontRight, relativeBackLeft, relativeBackRight;
 
   /**
    * Initialize {@link SwerveDrive} with the directory provided.
@@ -146,6 +149,17 @@ public class SwerveSubsystem extends SubsystemBase {
       swerveDrive.updateOdometry();
       // vision.updatePoseEstimation(swerveDrive);
     }
+
+    // Logging relative wheel position
+    relativeFrontLeft = SmartDashboard.getNumber("AngleFrontLeft", Constants.FRONT_LEFT_ABS_ENCODER_OFFSET) - Constants.FRONT_LEFT_ABS_ENCODER_OFFSET;
+    relativeFrontRight = SmartDashboard.getNumber("AngleFrontRight", Constants.FRONT_LEFT_ABS_ENCODER_OFFSET) - Constants.FRONT_RIGHT_ABS_ENCODER_OFFSET;
+    relativeBackLeft = SmartDashboard.getNumber("AngleBackLeft", Constants.FRONT_LEFT_ABS_ENCODER_OFFSET) - Constants.BACK_LEFT_ABS_ENCODER_OFFSET;
+    relativeBackRight = SmartDashboard.getNumber("AngleBackRight", Constants.FRONT_LEFT_ABS_ENCODER_OFFSET) - Constants.BACK_RIGHT_ABS_ENCODER_OFFSET;
+
+    SmartDashboard.putNumber("AngleFrontLeft", relativeFrontLeft);
+    SmartDashboard.putNumber("AngleFrontRight", relativeFrontRight);
+    SmartDashboard.putNumber("AngleBackLeft", relativeBackLeft);
+    SmartDashboard.putNumber("AngleBackRight", relativeBackRight);
   }
 
   @Override
