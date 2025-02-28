@@ -151,15 +151,15 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     // Logging relative wheel position
-    relativeFrontLeft = SmartDashboard.getNumber("AngleFrontLeft", Constants.FRONT_LEFT_ABS_ENCODER_OFFSET) - Constants.FRONT_LEFT_ABS_ENCODER_OFFSET;
-    relativeFrontRight = SmartDashboard.getNumber("AngleFrontRight", Constants.FRONT_LEFT_ABS_ENCODER_OFFSET) - Constants.FRONT_RIGHT_ABS_ENCODER_OFFSET;
-    relativeBackLeft = SmartDashboard.getNumber("AngleBackLeft", Constants.FRONT_LEFT_ABS_ENCODER_OFFSET) - Constants.BACK_LEFT_ABS_ENCODER_OFFSET;
-    relativeBackRight = SmartDashboard.getNumber("AngleBackRight", Constants.FRONT_LEFT_ABS_ENCODER_OFFSET) - Constants.BACK_RIGHT_ABS_ENCODER_OFFSET;
+    // relativeFrontLeft = SmartDashboard.getNumber("AngleFrontLeft", Constants.FRONT_LEFT_ABS_ENCODER_OFFSET) - Constants.FRONT_LEFT_ABS_ENCODER_OFFSET;
+    // relativeFrontRight = SmartDashboard.getNumber("AngleFrontRight", Constants.FRONT_LEFT_ABS_ENCODER_OFFSET) - Constants.FRONT_RIGHT_ABS_ENCODER_OFFSET;
+    // relativeBackLeft = SmartDashboard.getNumber("AngleBackLeft", Constants.FRONT_LEFT_ABS_ENCODER_OFFSET) - Constants.BACK_LEFT_ABS_ENCODER_OFFSET;
+    // relativeBackRight = SmartDashboard.getNumber("AngleBackRight", Constants.FRONT_LEFT_ABS_ENCODER_OFFSET) - Constants.BACK_RIGHT_ABS_ENCODER_OFFSET;
 
-    SmartDashboard.putNumber("AngleFrontLeft", relativeFrontLeft);
-    SmartDashboard.putNumber("AngleFrontRight", relativeFrontRight);
-    SmartDashboard.putNumber("AngleBackLeft", relativeBackLeft);
-    SmartDashboard.putNumber("AngleBackRight", relativeBackRight);
+    // SmartDashboard.putNumber("AngleFrontLeft", relativeFrontLeft);
+    // SmartDashboard.putNumber("AngleFrontRight", relativeFrontRight);
+    // SmartDashboard.putNumber("AngleBackLeft", relativeBackLeft);
+    // SmartDashboard.putNumber("AngleBackRight", relativeBackRight);
   }
 
   @Override

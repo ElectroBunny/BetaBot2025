@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.commands.AlignToReefTagRelative;
+import frc.robot.commands.MoveAlgaeArmToAngle;
 import frc.robot.commands.MoveElevatorToPlace;
 import frc.robot.commands.ScoreCoral;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -19,7 +20,6 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 public class AutoDiagonalL2 extends SequentialCommandGroup {
   public AutoDiagonalL2(SwerveSubsystem drivebase, boolean isRightScore) {
         addCommands(
-      new InstantCommand(()-> drivebase.resetOdometry(new Pose2d(0,0,drivebase.getHeading()))),
       new WaitCommand(0),
       new RunCommand(() -> drivebase.drive(new Translation2d(1.3,0), 0, false), drivebase).withTimeout(2.3),
       new InstantCommand(()->drivebase.drive(new Translation2d(0,0), 0,false)),

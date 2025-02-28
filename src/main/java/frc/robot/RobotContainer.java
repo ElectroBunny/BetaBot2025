@@ -13,6 +13,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import frc.robot.commands.AlignToReefTagRelative;
 import frc.robot.commands.IntakeCoralByCurrent;
 import frc.robot.commands.IntakeCoralPID;
+import frc.robot.commands.MoveAlgaeArmDown;
 import frc.robot.commands.MoveAlgaeArmManually;
 import frc.robot.commands.MoveAlgaeArmToAngle;
 import frc.robot.commands.MoveElevatorManually;
@@ -103,8 +104,6 @@ public class RobotContainer {
 		elevator = Elevator.getInstance();
 		coralScorer = CoralScorer.getInstance();
 
-		new Trigger(() -> RobotController.getUserButton())
-				.onTrue(new InstantCommand(() -> resetEncoderPositions()));
 
 		m_chooser.addOption("L2Right", new AutoDiagonalL2(drivebase, true));
 		m_chooser.addOption("L2Left", new AutoDiagonalL2(drivebase, false));
@@ -120,7 +119,7 @@ public class RobotContainer {
 		
 		// Algae
 		operatorController.povRight().onTrue(new MoveAlgaeArmToAngle(Constants.ALGAE_ARM_OPEN_SPEED, Constants.ALGAE_ARM_REEF_POSE, true));
-		operatorController.povLeft().onTrue(new MoveAlgaeArmToAngle(Constants.ALGAE_ARM_CLOSE_SPEED, Constants.ALGAE_ARM_CLOSED_POSE, false));
+		operatorController.povLeft().onTrue(new MoveAlgaeArmDown(-0.1, Constants.ALGAE_ARM_REEF_POSE2, false));
 		operatorController.L2().whileTrue(new ScoreAlgae(Constants.ALGAE_INTAKE_POWER));
 		operatorController.R2().whileTrue(new ScoreAlgae(-Constants.ALGAE_INTAKE_POWER));
 
@@ -152,7 +151,7 @@ public class RobotContainer {
 		driverController.povLeft().onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(3));
 
 		// Reset swerve and elevator positions
-		driverController.options().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+		driverController.triangle().onTrue((Commands.runOnce(()->drivebase.zeroGyro(), drivebase)));
 		driverController.create().onTrue(new InstantCommand(() -> elevator.resetPosition()));
 
 		// Slow drive

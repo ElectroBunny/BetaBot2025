@@ -91,6 +91,10 @@ public class AlgaeArm extends SubsystemBase {
      return instance;
    }
 
+   public double getPose(){
+    return absEncoder.get();
+   }
+
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Algae Abs Encoder", absEncoder.get());

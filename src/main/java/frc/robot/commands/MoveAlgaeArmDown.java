@@ -7,12 +7,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AlgaeArm;
 
-public class MoveAlgaeArmToAngle extends Command {
+public class MoveAlgaeArmDown extends Command {
   private double speed, angle;
   private AlgaeArm arm;
   private boolean stayStable;
 
-  public MoveAlgaeArmToAngle(double speed, double angle, boolean stayStable) {
+  public MoveAlgaeArmDown(double speed, double angle, boolean stayStable) {
     this.speed = speed;
     this.angle = angle;
     this.stayStable = stayStable;
@@ -22,19 +22,20 @@ public class MoveAlgaeArmToAngle extends Command {
 
   @Override
   public void initialize() {
-    this.arm.setSpeed(speed);
   }
 
   @Override
-  public void execute() {}
+  public void execute() {
+    
+    this.arm.setSpeed(AlgaeArm.getInstance().getPose() < angle ? 0.0: speed);
+  }
 
   @Override
   public void end(boolean interrupted) {
-    arm.setSpeed(stayStable ? 0.015 : 0);
   }
 
   @Override
   public boolean isFinished() {
-    return this.arm.isAtAngle(this.angle);
+    return false;
   }
 }
