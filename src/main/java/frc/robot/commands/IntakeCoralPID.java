@@ -33,6 +33,6 @@ public class IntakeCoralPID extends Command {
 
   @Override
   public boolean isFinished() {
-    return coralScorer.getPose() - startPose > 0.9;
+    return coralScorer.getPose() - startPose > 0.7;
   }
 }

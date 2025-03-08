@@ -43,9 +43,9 @@ public final class Constants {
 	public static final int ELEVATOR_CURRENT_LIMIT = 40;
   	public static final double ELEVATOR_MANUAL_POWER = 0.1;
   	public static final double L1_HEIGHT = 0;
-  	public static final double L2_HEIGHT = 12.4;
-  	public static final double L3_HEIGHT = 27.3;
-  	public static final double L4_HEIGHT = 51.5;
+  	public static final double L2_HEIGHT = 12.75;
+  	public static final double L3_HEIGHT = 30.6;
+  	public static final double L4_HEIGHT = 53;
   	public static final double CLOSED_HEIGHT = 1;
 	public static final double INTAKE_HEIGHT = 5;
 	public static final boolean Elevator_INVERTED = true;
@@ -59,7 +59,7 @@ public final class Constants {
 	public static final double ROT_TOLERANCE_REEF_ALIGNMENT = 1;
 	public static final double X_SETPOINT_REEF_ALIGNMENT = -0.5;  // Vertical pose
 	public static final double X_TOLERANCE_REEF_ALIGNMENT = 0.02;
-	public static final double Y_SETPOINT_REEF_ALIGNMENT = 0.19;  // Horizontal pose
+	public static final double Y_SETPOINT_REEF_ALIGNMENT = 0.22;  // Horizontal pose
 	public static final double Y_TOLERANCE_REEF_ALIGNMENT = 0.02;
 
 	public static final double DONT_SEE_TAG_WAIT_TIME = 1;
@@ -91,7 +91,7 @@ public final class Constants {
 	// Coral scores constants
 	public static final int CORAL_SCORER_MOTOR_ID = 26;
 	public static final int CORAL_SCORER_CURRENT_LIMIT = 110;
-	public static final double CORAL_SCORE_POWER = 0.1;
+	public static final double CORAL_SCORE_POWER = 0.4;
   	public static final double AUTO_CORAL_INTAKE_POWER = 0.05;
 	public static final double CORAL_SCORER_MAX_VELO = 3500;
 	public static final double CORAL_SCORER_MAX_ACCELLERATION = 12000;

@@ -85,8 +85,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 
-		Elevator.getInstance().setIdleMode(IdleMode.kBrake);
-
 		// m_robotContainer.resetEncoderPositions();//TODO: remember to remove this for comp
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to

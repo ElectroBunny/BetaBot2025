@@ -6,11 +6,10 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.MoveElevatorToPlace;
-import frc.robot.commands.ScoreAlgae;
-
 import com.pathplanner.lib.auto.NamedCommands;
 
 import frc.robot.commands.AlignToReefTagRelative;
+import frc.robot.commands.ElevatorDefaultCommand;
 import frc.robot.commands.IntakeCoralByCurrent;
 import frc.robot.commands.IntakeCoralPID;
 import frc.robot.commands.MoveAlgaeArmDown;
@@ -19,6 +18,8 @@ import frc.robot.commands.MoveAlgaeArmToAngle;
 import frc.robot.commands.MoveElevatorManually;
 import frc.robot.commands.ScoreCoral;
 import frc.robot.commands.swervedrive.auto.AutoDiagonalL2;
+import frc.robot.commands.swervedrive.auto.AutoDiagonalL2EndWithDrive;
+import frc.robot.commands.swervedrive.auto.AutoDiagonalL4;
 import frc.robot.commands.swervedrive.auto.AutoForward;
 import frc.robot.subsystems.CoralScorer;
 import frc.robot.subsystems.Elevator;
@@ -27,15 +28,13 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import java.util.function.DoubleSupplier;
@@ -45,6 +44,7 @@ import swervelib.SwerveInputStream;
 public class RobotContainer {
 	final CommandPS5Controller driverController = new CommandPS5Controller(0);
 	final CommandPS5Controller operatorController = new CommandPS5Controller(1);
+	final CommandPS5Controller test = new CommandPS5Controller(2);
 	// final CommandJoystick logiJoystick = new CommandJoystick(2);
 
 	public final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
@@ -104,9 +104,17 @@ public class RobotContainer {
 		elevator = Elevator.getInstance();
 		coralScorer = CoralScorer.getInstance();
 
+		
+		elevator.setDefaultCommand(new ElevatorDefaultCommand());
 
 		m_chooser.addOption("L2Right", new AutoDiagonalL2(drivebase, true));
 		m_chooser.addOption("L2Left", new AutoDiagonalL2(drivebase, false));
+		m_chooser.addOption("RightStartL2RightScoreDrive", new AutoDiagonalL2EndWithDrive(drivebase, true, true));
+		m_chooser.addOption("RightStartL2LeftScoreDrive", new AutoDiagonalL2EndWithDrive(drivebase, false, true));
+		m_chooser.addOption("LeftStartL2RightScoreDrive", new AutoDiagonalL2EndWithDrive(drivebase, true, false));
+		m_chooser.addOption("LeftStartL2LeftScoreDrive", new AutoDiagonalL2EndWithDrive(drivebase, false, false));
+		m_chooser.addOption("L4Right", new AutoDiagonalL4(drivebase, true));
+		m_chooser.addOption("L4Left", new AutoDiagonalL4(drivebase, false));
 		m_chooser.addOption("forward", new AutoForward(drivebase));
 
 		SmartDashboard.putData(m_chooser);
@@ -118,37 +126,42 @@ public class RobotContainer {
 				!RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedAnglularVelocitySim);
 		
 		// Algae
-		operatorController.povRight().onTrue(new MoveAlgaeArmToAngle(Constants.ALGAE_ARM_OPEN_SPEED, Constants.ALGAE_ARM_REEF_POSE, true));
-		operatorController.povLeft().onTrue(new MoveAlgaeArmDown(-0.1, Constants.ALGAE_ARM_REEF_POSE2, false));
-		operatorController.L2().whileTrue(new ScoreAlgae(Constants.ALGAE_INTAKE_POWER));
-		operatorController.R2().whileTrue(new ScoreAlgae(-Constants.ALGAE_INTAKE_POWER));
+		// operatorController.povRight().whileTrue(new MoveAlgaeArmManually(0.2));
+		// operatorController.povLeft().whileTrue(new MoveAlgaeArmManually(-0.1));
+		operatorController.povRight().onTrue(new AlignToReefTagRelative(true, drivebase).withTimeout(7));
+		operatorController.povLeft().onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(7));
 
 		// Coral score
 		operatorController.L1().whileTrue(new ScoreCoral(Constants.CORAL_SCORE_POWER));
-		operatorController.options().whileTrue(new ScoreCoral(-Constants.CORAL_SCORE_POWER));
+		operatorController.L2().whileTrue(new ScoreCoral(-0.165));
+
+
+		operatorController.options().whileTrue(new InstantCommand(() -> elevator.resetPosition()));
 
 		// Auto intake
-		operatorController.R1().onTrue(new MoveElevatorToPlace(0)
+		operatorController.R1().onTrue(new MoveElevatorToPlace(0, 1.5)
 				.andThen(new IntakeCoralByCurrent(0.25))
-				.andThen(new MoveElevatorToPlace(Constants.INTAKE_HEIGHT)
+				.andThen(new MoveElevatorToPlace(Constants.INTAKE_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE)
 						.andThen(new IntakeCoralPID(Constants.AUTO_CORAL_INTAKE_POWER))
-						.andThen(new MoveElevatorToPlace(Constants.CLOSED_HEIGHT))));
+						.andThen(new MoveElevatorToPlace(Constants.CLOSED_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE))));
 		
 		// Stop auto intake
-		operatorController.circle().onTrue(new InstantCommand(() -> coralScorer.setPower(0)));
+		// operatorController.circle().onTrue(new InstantCommand(() -> coralScorer.setPower(0)));
+		operatorController.circle().onTrue(new MoveElevatorToPlace(Constants.L4_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE));
 		
 		// Elevator manual
 		operatorController.povUp().whileTrue(new MoveElevatorManually(0.3));
 		operatorController.povDown().whileTrue(new MoveElevatorManually(-0.2));
 
 		// Elevator auto poses
-		operatorController.triangle().onTrue(new MoveElevatorToPlace(Constants.L3_HEIGHT));
-		operatorController.square().onTrue(new MoveElevatorToPlace(Constants.L2_HEIGHT));
-		operatorController.cross().onTrue(new MoveElevatorToPlace(Constants.INTAKE_HEIGHT).andThen(new MoveElevatorToPlace(Constants.CLOSED_HEIGHT)));
+		operatorController.triangle().onTrue(new MoveElevatorToPlace(Constants.L3_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE));
+		operatorController.square().onTrue(new MoveElevatorToPlace(Constants.L2_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE));
+		operatorController.cross().onTrue(new MoveElevatorToPlace(Constants.INTAKE_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE)
+		.andThen(new MoveElevatorToPlace(Constants.CLOSED_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE)));
 
 		// Reef alignment
-		driverController.povRight().onTrue(new AlignToReefTagRelative(true, drivebase).withTimeout(3));
-		driverController.povLeft().onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(3));
+		driverController.povRight().onTrue(new AlignToReefTagRelative(true, drivebase).withTimeout(7));
+		driverController.povLeft().onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(7));
 
 		// Reset swerve and elevator positions
 		driverController.triangle().onTrue((Commands.runOnce(()->drivebase.zeroGyro(), drivebase)));
@@ -163,6 +176,12 @@ public class RobotContainer {
 					swerveSpeedScaleTranslation = () -> 1;
 					swerveSpeedScaleRotation = () -> 1;
 				}));
+
+				
+		test.povUp().whileTrue(Elevator.getInstance().sysIdQuasistatic(Direction.kForward));
+		test.povDown().whileTrue(Elevator.getInstance().sysIdQuasistatic(Direction.kReverse));
+		test.povLeft().whileTrue(Elevator.getInstance().sysIdDynamic(Direction.kForward));
+		test.povRight().whileTrue(Elevator.getInstance().sysIdDynamic(Direction.kReverse));
 	}
 
 	public void logInitialize() {

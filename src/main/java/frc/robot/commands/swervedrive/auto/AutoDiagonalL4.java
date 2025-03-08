@@ -16,14 +16,16 @@ import frc.robot.commands.MoveElevatorToPlace;
 import frc.robot.commands.ScoreCoral;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
-public class AutoDiagonal extends SequentialCommandGroup {
-  public AutoDiagonal(SwerveSubsystem drivebase, boolean isRightScore, double elevatorHeight) {
+public class AutoDiagonalL4 extends SequentialCommandGroup {
+  public AutoDiagonalL4(SwerveSubsystem drivebase, boolean isRightScore) {
         addCommands(
       new WaitCommand(0),
       new RunCommand(() -> drivebase.drive(new Translation2d(1.3,0), 0, false), drivebase).withTimeout(2.3),
       new InstantCommand(()->drivebase.drive(new Translation2d(0,0), 0,false)),
       new AlignToReefTagRelative(isRightScore, drivebase).withTimeout(4),
-      new MoveElevatorToPlace(elevatorHeight, Constants.ELEVATOR_POSITION_TOLERANCE).withTimeout(4),
-      new ElevatorDefaultCommand().alongWith(new ScoreCoral(1).withTimeout(2)).withTimeout(2));
+      new MoveElevatorToPlace(Constants.L4_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE).withTimeout(3),
+      new ElevatorDefaultCommand().alongWith(new ScoreCoral(0.5).withTimeout(2).
+      andThen(new RunCommand(() -> drivebase.drive(new Translation2d(-0.3,0), 0, false), drivebase).withTimeout(0.5))),
+      new MoveElevatorToPlace(Constants.CLOSED_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE).withTimeout(3));
   }
 }

@@ -30,6 +30,7 @@ public class MoveElevatorManually extends Command {
 	@Override
 	public void end(boolean interrupted) {
 		elevator.stop();
+		elevator.setDefaultPose(elevator.getPose());
 	}
 
 	@Override
