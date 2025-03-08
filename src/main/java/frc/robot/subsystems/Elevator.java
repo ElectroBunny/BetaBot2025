@@ -4,6 +4,10 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Centimeters;
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Volts;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -16,9 +20,14 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
-import edu.wpi.first.math.controller.ElevatorFeedforward;
+import edu.wpi.first.units.measure.MutDistance;
+import edu.wpi.first.units.measure.MutLinearVelocity;
+import edu.wpi.first.units.measure.MutVoltage;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 
 public class Elevator extends SubsystemBase {
@@ -28,6 +37,8 @@ public class Elevator extends SubsystemBase {
 	private SparkFlexConfig masterMotorConfig, followerMotorConfig;
 	private SparkClosedLoopController closedLoopController;
 	private RelativeEncoder encoder;
+
+	private double defaultPose = 0;
 
 	private Elevator() {
 		masterMotor = new SparkFlex(Constants.ELEVATOR_MASTER_MOTOR_ID, MotorType.kBrushless);
@@ -40,8 +51,8 @@ public class Elevator extends SubsystemBase {
 
 		// sets the elevator to coast prematch and it will be set to break when match
 		// starts
-		masterMotorConfig.idleMode(IdleMode.kBrake);
-		followerMotorConfig.idleMode(IdleMode.kBrake);
+		masterMotorConfig.idleMode(IdleMode.kCoast);
+		followerMotorConfig.idleMode(IdleMode.kCoast);
 
 		masterMotorConfig.smartCurrentLimit(Constants.ELEVATOR_CURRENT_LIMIT);
 		followerMotorConfig.smartCurrentLimit(Constants.ELEVATOR_CURRENT_LIMIT);
@@ -56,8 +67,7 @@ public class Elevator extends SubsystemBase {
 				.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
 				.p(Constants.ELEVATOR_P)
 				.i(Constants.ELEVATOR_I)
-				.d(Constants.ELEVATOR_D)
-				.outputRange(-1, 1);
+				.d(Constants.ELEVATOR_D);
 
 		masterMotorConfig.closedLoop.maxMotion
 				.maxVelocity(Constants.ELEVATOR_MAX_VELO)
@@ -72,26 +82,28 @@ public class Elevator extends SubsystemBase {
 		followerMotor.configure(followerMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 		
 		encoder = masterMotor.getEncoder();
-	}
 
-	/**
-	 * used to reset the elevator do not use in game
-	 */
-	public void setIdleMode(IdleMode idleMode) {
-		masterMotorConfig.idleMode(idleMode);
-		followerMotorConfig.idleMode(idleMode);
-
-		masterMotor.configureAsync(masterMotorConfig, ResetMode.kNoResetSafeParameters,
-				PersistMode.kNoPersistParameters);
-		followerMotor.configureAsync(followerMotorConfig, ResetMode.kNoResetSafeParameters,
-				PersistMode.kNoPersistParameters);
+		routine = new SysIdRoutine(
+			// Empty config defaults to 1 volt/second ramp rate and 7 volt step voltage.
+			new SysIdRoutine.Config(null, Voltage.ofBaseUnits(4, Volts),null),
+			new SysIdRoutine.Mechanism(
+				masterMotor::setVoltage,
+				log -> {
+				  // Record a frame for the shooter motor.
+				  log.motor("elevator")
+					  .voltage(
+						  m_appliedVoltage.mut_replace(
+							  masterMotor.getAppliedOutput(), Volts))
+					  .linearPosition(m_angle.mut_replace(encoder.getPosition(), Meters))
+					  .linearVelocity(m_velocity.mut_replace(encoder.getVelocity(), MetersPerSecond));
+				},
+				this));
 	}
 
 	public void resetPosition() {
 		encoder.setPosition(0);
+		defaultPose = 0;
 	}
-
-	ElevatorFeedforward elevatorFeedforward = new ElevatorFeedforward(0.0087967 * 7168, 0.025837 * 7168, 0.00021483 * 7168);
 
 	/**
 	 * Moves the elevator to the specified location
@@ -123,6 +135,18 @@ public class Elevator extends SubsystemBase {
 		return (Math.abs(encoder.getPosition() - point) <= Constants.ELEVATOR_POSITION_TOLERANCE);
 	}
 
+	public double getPose(){
+		return encoder.getPosition();
+	}
+
+	public void setDefaultPose(double pose){
+		defaultPose = pose;
+	}
+	
+	public double getDefaultPose(){
+		return defaultPose;
+	}
+
 	public static Elevator getInstance() {
 		if (instance == null) {
 			instance = new Elevator();
@@ -137,4 +161,23 @@ public class Elevator extends SubsystemBase {
 		SmartDashboard.putNumber("elevatorCurrent", masterMotor.getOutputCurrent());
 
 	}
+
+	public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+		return routine.quasistatic(direction);
+	}
+
+	public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+		return routine.dynamic(direction);
+	}
+	
+  // Mutable holder for unit-safe voltage values, persisted to avoid reallocation.
+  private final MutVoltage m_appliedVoltage = Volts.mutable(0);
+  // Mutable holder for unit-safe linear distance values, persisted to avoid reallocation.
+  private final MutDistance m_angle = Centimeters.mutable(0);
+  // Mutable holder for unit-safe linear velocity values, persisted to avoid reallocation.
+  private final MutLinearVelocity m_velocity = MetersPerSecond.mutable(0);
+  
+  // Create a new SysId routine for characterizing the shooter.
+  private final SysIdRoutine routine;
+
 }
