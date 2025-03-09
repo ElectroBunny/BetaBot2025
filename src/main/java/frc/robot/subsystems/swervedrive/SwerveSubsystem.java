@@ -35,6 +35,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
+import frc.robot.LimelightHelpers;
+
 //import frc.robot.subsystems.swervedrive.Vision.Cameras;
 import java.io.File;
 import java.io.IOException;
@@ -160,6 +162,8 @@ public class SwerveSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("AngleFrontRight", relativeFrontRight);
     // SmartDashboard.putNumber("AngleBackLeft", relativeBackLeft);
     // SmartDashboard.putNumber("AngleBackRight", relativeBackRight);
+
+    SmartDashboard.putBoolean("SeesTag", LimelightHelpers.getTV(""));
   }
 
   @Override
