@@ -132,8 +132,6 @@ public class RobotContainer {
 		// Coral reverse
 		operatorController.L1().whileTrue(new ScoreCoral(-0.1));
 
-		operatorController.options().whileTrue(new InstantCommand(() -> elevator.resetPosition()));
-
 		// Auto intake
 		operatorController.R1().onTrue(new MoveElevatorToPlace(0, 1.5)
 				.andThen(new IntakeCoralByCurrent(0.25))
@@ -144,10 +142,6 @@ public class RobotContainer {
 		// Stop auto intake
 		operatorController.R2().onTrue(new InstantCommand(() -> coralScorer.setPower(0)));
 		
-		// Stop auto intake
-		// operatorController.circle().onTrue(new InstantCommand(() -> coralScorer.setPower(0)));
-		operatorController.circle().onTrue(new MoveElevatorToPlace(Constants.L4_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE));
-		
 		// Elevator manual
 		operatorController.povUp().whileTrue(new MoveElevatorManually(0.3));
 		operatorController.povDown().whileTrue(new MoveElevatorManually(-0.2));
@@ -157,7 +151,7 @@ public class RobotContainer {
 		operatorController.square().onTrue(new MoveElevatorToPlace(Constants.L2_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE));
 		operatorController.cross().onTrue(new MoveElevatorToPlace(Constants.INTAKE_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE)
 		.andThen(new MoveElevatorToPlace(Constants.CLOSED_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE)));
-
+		operatorController.circle().onTrue(new MoveElevatorToPlace(Constants.L4_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE));
 
 		// Reef alignment
 		driverController.povRight().onTrue(new AlignToReefTagRelative(true, drivebase).withTimeout(7));
