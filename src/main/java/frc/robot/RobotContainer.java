@@ -113,8 +113,6 @@ public class RobotContainer {
 		m_chooser.addOption("RightStartL2LeftScoreDrive", new AutoDiagonalL2EndWithDrive(drivebase, false, true));
 		m_chooser.addOption("LeftStartL2RightScoreDrive", new AutoDiagonalL2EndWithDrive(drivebase, true, false));
 		m_chooser.addOption("LeftStartL2LeftScoreDrive", new AutoDiagonalL2EndWithDrive(drivebase, false, false));
-		m_chooser.addOption("L4Right", new AutoDiagonalL4(drivebase, true));
-		m_chooser.addOption("L4Left", new AutoDiagonalL4(drivebase, false));
 		m_chooser.addOption("forward", new AutoForward(drivebase));
 
 		SmartDashboard.putData(m_chooser);
@@ -131,10 +129,8 @@ public class RobotContainer {
 		operatorController.povRight().whileTrue(new MoveAlgaeArmManually(0.2));
 		operatorController.povLeft().whileTrue(new MoveAlgaeArmManually(-0.1));
 
-		// Coral score
-		operatorController.L1().whileTrue(new ScoreCoral(Constants.CORAL_SCORE_POWER));
-		operatorController.L2().whileTrue(new ScoreCoral(0.2));
-
+		// Coral reverse
+		operatorController.L1().whileTrue(new ScoreCoral(-0.1));
 
 		operatorController.options().whileTrue(new InstantCommand(() -> elevator.resetPosition()));
 
@@ -144,6 +140,9 @@ public class RobotContainer {
 				.andThen(new MoveElevatorToPlace(Constants.INTAKE_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE)
 						.andThen(new IntakeCoralPID(Constants.AUTO_CORAL_INTAKE_POWER))
 						.andThen(new MoveElevatorToPlace(Constants.CLOSED_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE))));
+
+		// Stop auto intake
+		operatorController.R2().onTrue(new InstantCommand(() -> coralScorer.setPower(0)));
 		
 		// Stop auto intake
 		// operatorController.circle().onTrue(new InstantCommand(() -> coralScorer.setPower(0)));
@@ -167,6 +166,10 @@ public class RobotContainer {
 		// Reset swerve and elevator positions
 		driverController.triangle().onTrue((Commands.runOnce(()->drivebase.zeroGyro(), drivebase)));
 		driverController.create().onTrue(new InstantCommand(() -> elevator.resetPosition()));
+
+		// Coral score
+		driverController.L1().whileTrue(new ScoreCoral(Constants.CORAL_SCORE_POWER));
+		driverController.L2().whileTrue(new ScoreCoral(0.2));
 
 		// Slow drive
 		driverController.R2().onTrue(new InstantCommand(() -> {
