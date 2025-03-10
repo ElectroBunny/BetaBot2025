@@ -133,7 +133,7 @@ public class RobotContainer {
 
 		// Coral score
 		operatorController.L1().whileTrue(new ScoreCoral(Constants.CORAL_SCORE_POWER));
-		operatorController.L2().whileTrue(new ScoreCoral(-0.165));
+		operatorController.L2().whileTrue(new ScoreCoral(0.2));
 
 
 		operatorController.options().whileTrue(new InstantCommand(() -> elevator.resetPosition()));
@@ -158,6 +158,7 @@ public class RobotContainer {
 		operatorController.square().onTrue(new MoveElevatorToPlace(Constants.L2_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE));
 		operatorController.cross().onTrue(new MoveElevatorToPlace(Constants.INTAKE_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE)
 		.andThen(new MoveElevatorToPlace(Constants.CLOSED_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE)));
+
 
 		// Reef alignment
 		driverController.povRight().onTrue(new AlignToReefTagRelative(true, drivebase).withTimeout(7));

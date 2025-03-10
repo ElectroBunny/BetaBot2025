@@ -45,8 +45,7 @@ public final class Constants {
   	public static final double L1_HEIGHT = 0;
   	public static final double L2_HEIGHT = 10.833;
   	public static final double L3_HEIGHT = 26.85;
-  	public static final double L4_HEIGHT = 52.16
-	;
+  	public static final double L4_HEIGHT = 52.16;
   	public static final double CLOSED_HEIGHT = 1;
 	public static final double INTAKE_HEIGHT = 5;
 	public static final boolean Elevator_INVERTED = true;
