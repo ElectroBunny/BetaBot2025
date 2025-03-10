@@ -44,7 +44,7 @@ import swervelib.SwerveInputStream;
 public class RobotContainer {
 	final CommandPS5Controller driverController = new CommandPS5Controller(0);
 	final CommandPS5Controller operatorController = new CommandPS5Controller(1);
-	final CommandPS5Controller test = new CommandPS5Controller(2);
+	// final CommandPS5Controller test = new CommandPS5Controller(2);
 	// final CommandJoystick logiJoystick = new CommandJoystick(2);
 
 	public final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
@@ -126,10 +126,10 @@ public class RobotContainer {
 				!RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedAnglularVelocitySim);
 		
 		// Algae
-		// operatorController.povRight().whileTrue(new MoveAlgaeArmManually(0.2));
-		// operatorController.povLeft().whileTrue(new MoveAlgaeArmManually(-0.1));
-		operatorController.povRight().onTrue(new AlignToReefTagRelative(true, drivebase).withTimeout(7));
-		operatorController.povLeft().onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(7));
+		// operatorController.povRight().onTrue(new MoveAlgaeArmToAngle(0.2, Constants.ALGAE_ARM_REEF_POSE, true));
+		// operatorController.povLeft().onTrue(new MoveAlgaeArmToAngle(-0.1, Constants.ALGAE_ARM_CLOSED_POSE, false));
+		operatorController.povRight().whileTrue(new MoveAlgaeArmManually(0.2));
+		operatorController.povLeft().whileTrue(new MoveAlgaeArmManually(-0.1));
 
 		// Coral score
 		operatorController.L1().whileTrue(new ScoreCoral(Constants.CORAL_SCORE_POWER));
@@ -179,10 +179,10 @@ public class RobotContainer {
 				}));
 
 				
-		test.povUp().whileTrue(Elevator.getInstance().sysIdQuasistatic(Direction.kForward));
-		test.povDown().whileTrue(Elevator.getInstance().sysIdQuasistatic(Direction.kReverse));
-		test.povLeft().whileTrue(Elevator.getInstance().sysIdDynamic(Direction.kForward));
-		test.povRight().whileTrue(Elevator.getInstance().sysIdDynamic(Direction.kReverse));
+		// test.povUp().whileTrue(Elevator.getInstance().sysIdQuasistatic(Direction.kForward));
+		// test.povDown().whileTrue(Elevator.getInstance().sysIdQuasistatic(Direction.kReverse));
+		// test.povLeft().whileTrue(Elevator.getInstance().sysIdDynamic(Direction.kForward));
+		// test.povRight().whileTrue(Elevator.getInstance().sysIdDynamic(Direction.kReverse));
 	}
 
 	public void logInitialize() {
