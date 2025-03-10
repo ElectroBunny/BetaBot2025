@@ -8,6 +8,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -43,6 +44,7 @@ public class Robot extends TimedRobot {
 		m_robotContainer.resetEncoderPositions();
 		m_robotContainer.logInitialize();
 		m_robotContainer.startCamera();
+		SmartDashboard.putBoolean("HasCoral", true);
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import frc.robot.subsystems.Elevator;
 
 public class ElevatorDefaultCommand extends Command {
 	private Elevator elevator;
+	private double power;
 
 	private final TrapezoidProfile.Constraints m_constraints = new TrapezoidProfile.Constraints(
 			Constants.ELEVATOR_MAX_VELO,
@@ -25,6 +26,7 @@ public class ElevatorDefaultCommand extends Command {
 
 	public ElevatorDefaultCommand() {
 		elevator = Elevator.getInstance();
+		this.power = 0;
 		addRequirements(elevator);
 
 		pidController.setTolerance(Constants.ELEVATOR_POSITION_TOLERANCE);
@@ -36,7 +38,7 @@ public class ElevatorDefaultCommand extends Command {
 
 	@Override
 	public void execute() {
-		double power = pidController.calculate(elevator.getPose(), elevator.getDefaultPose())
+		power = pidController.calculate(elevator.getPose(), elevator.getDefaultPose())
 				+ elevatorFeedforward.calculate(pidController.getSetpoint().velocity);
 
 				if(pidController.getPositionError() < 0 && power < -0.4){
