@@ -6,21 +6,36 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.CoralScorer;
+import frc.robot.subsystems.Elevator;
 
 public class ScoreCoral extends Command {
 	private CoralScorer coralScorer;
 	private double power;
+	private boolean powerByElevator;
 
-	public ScoreCoral(double power) {
+	public ScoreCoral(double power, boolean powerByElevator) {
 		this.power = power;
 		coralScorer = CoralScorer.getInstance();
+		this.powerByElevator = powerByElevator;
 		addRequirements(coralScorer);
 	}
 
 	@Override
 	public void initialize() {
-		coralScorer.setPower(power);
+		if(powerByElevator)
+		{
+			if(Elevator.getDefaultPose() == Constants.L4_HEIGHT) {
+				coralScorer.setPower(0.2);
+			}
+			else{
+				coralScorer.setPower(0.15);
+			}
+		}
+		else{
+			coralScorer.setPower(power);
+		}
 	}
 
 	@Override
