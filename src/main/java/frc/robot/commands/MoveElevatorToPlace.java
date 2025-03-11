@@ -44,8 +44,8 @@ public class MoveElevatorToPlace extends Command {
 		double power = pidController.calculate(elevator.getPose(), targetPose)
 				+ elevatorFeedforward.calculate(pidController.getSetpoint().velocity);
 
-		if (pidController.getPositionError() < 0 && power < -0.4) {
-			power = -0.4;
+		if (pidController.getPositionError() < 0 && power < -0.3) {
+			power = -0.3;
 		}
 
 		elevator.setPower(power);
