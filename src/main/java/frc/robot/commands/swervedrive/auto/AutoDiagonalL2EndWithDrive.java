@@ -24,7 +24,7 @@ public class AutoDiagonalL2EndWithDrive extends SequentialCommandGroup {
       new InstantCommand(()->drivebase.drive(new Translation2d(0,0), 0,false)),
       new AlignToReefTagRelative(isRightScore, drivebase).withTimeout(4),
       new MoveElevatorToPlace(Constants.L2_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE).withTimeout(4),
-      new ElevatorDefaultCommand().alongWith(new ScoreCoral(1).withTimeout(2)).withTimeout(2),
+      new ElevatorDefaultCommand().alongWith(new ScoreCoral(0.15, false).withTimeout(2)).withTimeout(2),
       new MoveElevatorToPlace(Constants.L2_HEIGHT + 2, Constants.ELEVATOR_POSITION_TOLERANCE).withTimeout(2),
       new MoveElevatorToPlace(Constants.CLOSED_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE).withTimeout(3),
       new RunCommand(() -> drivebase.drive(new Translation2d(0, rightStart ? 2 : -2), 0, false), drivebase).withTimeout(3));
