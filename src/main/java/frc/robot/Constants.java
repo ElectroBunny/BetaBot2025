@@ -57,9 +57,9 @@ public final class Constants {
 
 	public static final double ROT_SETPOINT_REEF_ALIGNMENT = 0;  // Rotation
 	public static final double ROT_TOLERANCE_REEF_ALIGNMENT = 1;
-	public static final double X_SETPOINT_REEF_ALIGNMENT = -0.45;  // Vertical pose
+	public static final double X_SETPOINT_REEF_ALIGNMENT = -0.34;  // Vertical pose
 	public static final double X_TOLERANCE_REEF_ALIGNMENT = 0.02;
-	public static final double Y_SETPOINT_REEF_ALIGNMENT = 0.19;  // Horizontal pose
+	public static final double Y_SETPOINT_REEF_ALIGNMENT = 0.16;  // Horizontal pose
 	public static final double Y_TOLERANCE_REEF_ALIGNMENT = 0.02;
 
 	public static final double DONT_SEE_TAG_WAIT_TIME = 1;
@@ -81,7 +81,7 @@ public final class Constants {
 	public static final double ALGAE_ARM_MAX_VEL = 0;
 	public static final double ALGAE_ARM_MAX_ACCEL = 0;
 	public static final double ALGAE_ARM_TOLERANCE = 0.01;
-	public static final double ALGAE_ARM_REEF_POSE = 0.55;
+	public static final double ALGAE_ARM_REEF_POSE = 0.79;
 	public static final double ALGAE_ARM_REEF_POSE2 = 0.45;
 	public static final double ALGAE_ARM_POSE_IN_FRAME = 0.171;
 	public static final double ALGAE_ARM_CLOSED_POSE = 0.2282;  // Out of frame perimeter
