@@ -38,7 +38,7 @@ public class Elevator extends SubsystemBase {
 	private SparkClosedLoopController closedLoopController;
 	private RelativeEncoder encoder;
 
-	private double defaultPose = 0;
+	private static double defaultPose = 0;
 
 	private Elevator() {
 		masterMotor = new SparkFlex(Constants.ELEVATOR_MASTER_MOTOR_ID, MotorType.kBrushless);
@@ -143,7 +143,7 @@ public class Elevator extends SubsystemBase {
 		defaultPose = pose;
 	}
 	
-	public double getDefaultPose(){
+	public static double getDefaultPose(){
 		return defaultPose;
 	}
 
