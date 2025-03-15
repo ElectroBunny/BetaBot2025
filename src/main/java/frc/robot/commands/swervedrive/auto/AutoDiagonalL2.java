@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
-import frc.robot.LimelightHelpers;
 import frc.robot.commands.AlignToReefTagRelative;
 import frc.robot.commands.ElevatorDefaultCommand;
 import frc.robot.commands.MoveElevatorToPlace;
@@ -21,7 +20,7 @@ public class AutoDiagonalL2 extends SequentialCommandGroup {
   public AutoDiagonalL2(SwerveSubsystem drivebase, boolean isRightScore) {
         addCommands(
       new WaitCommand(0),
-      new RunCommand(() -> drivebase.drive(new Translation2d(1.3,0), 0, false), drivebase).until(()-> LimelightHelpers.getBotPose_TargetSpace("")[2] <= 1),
+      new RunCommand(() -> drivebase.drive(new Translation2d(1.3,0), 0, false), drivebase).withTimeout(2.3),
       new InstantCommand(()->drivebase.drive(new Translation2d(0,0), 0,false)),
       new AlignToReefTagRelative(isRightScore, drivebase).withTimeout(4),
       new MoveElevatorToPlace(Constants.L2_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE).withTimeout(4),

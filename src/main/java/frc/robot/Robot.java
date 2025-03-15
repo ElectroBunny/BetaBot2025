@@ -43,7 +43,7 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		m_robotContainer.resetEncoderPositions();
 		m_robotContainer.logInitialize();
-		m_robotContainer.startCamera();
+		// m_robotContainer.startCamera();
 		SmartDashboard.putBoolean("HasCoral", true);
 	}
 

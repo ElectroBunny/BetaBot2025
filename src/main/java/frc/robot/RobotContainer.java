@@ -109,10 +109,8 @@ public class RobotContainer {
 
 		m_chooser.addOption("L2Right", new AutoDiagonalL2(drivebase, true));
 		m_chooser.addOption("L2Left", new AutoDiagonalL2(drivebase, false));
-		m_chooser.addOption("RightStartL2RightScoreDrive", new AutoDiagonalL2EndWithDrive(drivebase, true, true));
-		m_chooser.addOption("RightStartL2LeftScoreDrive", new AutoDiagonalL2EndWithDrive(drivebase, false, true));
-		m_chooser.addOption("LeftStartL2RightScoreDrive", new AutoDiagonalL2EndWithDrive(drivebase, true, false));
-		m_chooser.addOption("LeftStartL2LeftScoreDrive", new AutoDiagonalL2EndWithDrive(drivebase, false, false));
+		m_chooser.addOption("L4Right", new AutoDiagonalL4(drivebase, true));
+		m_chooser.addOption("L4Left", new AutoDiagonalL4(drivebase, false));
 		m_chooser.addOption("forward", new AutoForward(drivebase));
 
 		SmartDashboard.putData(m_chooser);
@@ -130,7 +128,7 @@ public class RobotContainer {
 		operatorController.povLeft().whileTrue(new MoveAlgaeArmManually(-0.1));
 
 		// Coral reverse
-		operatorController.L1().whileTrue(new ScoreCoral(-0.1));
+		operatorController.L1().whileTrue(new ScoreCoral(-0.1, false));
 
 		// Auto intake
 		operatorController.R1().onTrue(new MoveElevatorToPlace(0, 1.5)
@@ -154,18 +152,17 @@ public class RobotContainer {
 		operatorController.circle().onTrue(new MoveElevatorToPlace(Constants.L4_HEIGHT, Constants.ELEVATOR_POSITION_TOLERANCE));
 
 		// Reef alignment
-		driverController.povRight().onTrue(new AlignToReefTagRelative(true, drivebase).withTimeout(7));
-		driverController.povLeft().onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(7));
+		driverController.povRight().onTrue(new AlignToReefTagRelative(true, drivebase).withTimeout(3));
+		driverController.povLeft().onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(3));
 
 		// Reset swerve and elevator positions
 		driverController.triangle().onTrue((Commands.runOnce(()->drivebase.zeroGyro(), drivebase)));
 		driverController.create().onTrue(new InstantCommand(() -> elevator.resetPosition()));
 
 		// Coral score
-		driverController.L1().whileTrue(new ScoreCoral(Constants.CORAL_SCORE_POWER));
-		driverController.L2().whileTrue(new ScoreCoral(0.2));
+		driverController.L2().whileTrue(new ScoreCoral(0.2, true));
 
-		// Slow drive
+		// Slow drivez
 		driverController.R2().onTrue(new InstantCommand(() -> {
 			swerveSpeedScaleTranslation = () -> 0.3;
 			swerveSpeedScaleRotation = () -> 0.7;
